@@ -6,9 +6,8 @@
 
 class TcpServerThread : public QRunnable
 {
-    Q_OBJECT
 public:
-    explicit TcpServerThread(qintptr id, QObject *parent = 0);
+    explicit TcpServerThread(qintptr id);
 
     void run();
     

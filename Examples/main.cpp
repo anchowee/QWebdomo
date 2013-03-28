@@ -1,5 +1,5 @@
 #include <QCoreApplication>
-#include "Devices/device.h"
+#include "../Devices/device.h"
 
 int main(int argc, char *argv[])
 {

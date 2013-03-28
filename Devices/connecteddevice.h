@@ -18,7 +18,7 @@ public:
     virtual void send(const QByteArray &data) const = 0;
     
 signals:
-    void queryRecived(QList<QString> subtypes, QHash<Commands, int> commands);
+//    void queryRecived(QList<QString> subtypes, QHash<Commands, int> commands);
     void subtypesListRecived(QStringList subtypes);
 
 private:
