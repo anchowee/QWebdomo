@@ -1,6 +1,6 @@
 TEMPLATE = lib
 TARGET = WDDevices
-QT +=
+QT += network
 CONFIG += qt dll
 
 HEADERS += \

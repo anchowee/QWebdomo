@@ -21,7 +21,7 @@ public slots:
 
 private:
     Types _type;
-    QHash<Commands, int> _properties;
+    QHash<Commands, int> *_properties;
 
 };
 

@@ -1,8 +1,12 @@
 #include "networkconnecteddevice.h"
 
-NetworkConnectedDevice::NetworkConnectedDevice(QObject *parent) :
+NetworkConnectedDevice::NetworkConnectedDevice(QHostAddress address, QObject *parent) :
     ConnectedDevice(parent)
 {
+    _sendSocket = new QTcpSocket(this);
+    _sendSocket->connectToHost(address, 8787, QTcpSocket::ReadOnly);
+
+    _tcpServer = new ThreadedTcpServer(this);
     //TODO: setup network
 }
 

@@ -4,8 +4,8 @@ QT +=
 CONFIG += qt dll
 
 HEADERS += \
-    actuator.h
+    actuator.h \
+    types.h
 
 SOURCES += \
     actuator.cpp \
-    types.h

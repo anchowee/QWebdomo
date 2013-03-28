@@ -5,7 +5,7 @@ ConnectedDevice::ConnectedDevice(QObject *parent) :
 {
 }
 
-bool ConnectedDevice::match(const QStringList &subtypes){
+bool ConnectedDevice::match(QStringList subtypes) const{
     foreach(QString st, _subtypes){
         if(!subtypes.removeOne(st))
             return false;

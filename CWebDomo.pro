@@ -3,4 +3,5 @@ TEMPLATE = subdirs
 SUBDIRS += \
     Actuators \
     Devices \
-    Examples
+    Examples \
+    Utils

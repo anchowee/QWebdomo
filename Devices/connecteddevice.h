@@ -6,7 +6,7 @@
 #include <QList>
 #include <QStringList>
 
-#include "types.h"
+#include "../Actuators/types.h"
 
 class ConnectedDevice : public QObject
 {
@@ -14,10 +14,8 @@ class ConnectedDevice : public QObject
 public:
     explicit ConnectedDevice(QObject *parent = 0);
 
-    QString getAddress() const { return _address; }
-
-    bool match(const QStringList &subtypes);
-    virtual void send(const QByteArray &data) = 0;
+    bool match(QStringList subtypes) const;
+    virtual void send(const QByteArray &data) const = 0;
     
 signals:
     void queryRecived(QList<QString> subtypes, QHash<Commands, int> commands);
@@ -25,7 +23,6 @@ signals:
 
 private:
     QStringList _subtypes;
-    QString _address;
     
 };
 

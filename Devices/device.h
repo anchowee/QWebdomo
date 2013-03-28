@@ -5,8 +5,8 @@
 #include <QList>
 #include <QHash>
 #include <QStringList>
-#include "Actuators/actuator.h"
-#include "Devices/connecteddevice.h"
+#include "../Actuators/actuator.h"
+#include "connecteddevice.h"
 
 class Device : public QObject
 {
@@ -14,7 +14,7 @@ class Device : public QObject
 public:
     explicit Device(QObject *parent = 0, ConnectedDevice *parentDevice = 0);
 
-    void addChild(const ConnectedDevice &child);
+    void addChild(ConnectedDevice *child);
     void removeChild(const ConnectedDevice &child);
     
 public slots:
@@ -24,8 +24,8 @@ private:
     void sendTo(const ConnectedDevice &child, const QStringList &subtypes, const QHash<Commands, int> &commands);
 
 private:
-    QList<Actuator> *_actuators; //TODO: arrays of actuators
-    QList<ConnectedDevice> *_childs; //TODO: maybe a QMap is better for searches
+    QList<Actuator*> *_actuators; //TODO: arrays of actuators
+    QList<ConnectedDevice*> *_childs; //TODO: maybe a QMap is better for searches
     ConnectedDevice *_parent;
     
 };

@@ -1,19 +1,19 @@
 #include "device.h"
 
-Device::Device(QObject *parent) :
-    QObject(parent), _parent(parent)
+Device::Device(QObject *parent, ConnectedDevice *parentDevice) :
+    QObject(parent), _parent(parentDevice)
 {
-    connect(_parent, ConnectedDevice::queryRecived, this, Device::parseQuery);
+    connect(_parent, SIGNAL(queryRecived(QList<QString>,QHash<Commands,int>)), this, SLOT(parseQuery(QStringList,QHash<Commands,int>)));
 }
 
-void Device::addChild(const ConnectedDevice &child){
+void Device::addChild(ConnectedDevice *child){
     _childs->push_back(child);
 }
 
-void Device::parseQuery(const QList<QString> &subtypes, const QHash<Commands, int> &commands){
-    foreach (ConnectedDevice *dev, _childs) {
+void Device::parseQuery(const QStringList &subtypes, const QHash<Commands, int> &commands){
+    foreach (ConnectedDevice *dev, *_childs) {
         if(dev->match(subtypes)){
-            sendTo(dev, subtypes, commands);
+            sendTo(*dev, subtypes, commands);
         }
     }
 }
