@@ -1,7 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    Actuators \
-    Devices \
-    Examples \
-    Utils
+    Utils \
+    src

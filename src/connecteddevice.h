@@ -1,14 +1,14 @@
 #ifndef CONNECTEDDEVICE_H
 #define CONNECTEDDEVICE_H
 
+#include "qwebdomo_global.h"
+
 #include <QObject>
 #include <QString>
 #include <QList>
 #include <QStringList>
 
-#include "../Actuators/types.h"
-
-class ConnectedDevice : public QObject
+class QWEBDOMOSHARED_EXPORT ConnectedDevice : public QObject
 {
     Q_OBJECT
 public:

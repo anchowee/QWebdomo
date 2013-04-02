@@ -1,14 +1,16 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
+#include "qwebdomo_global.h"
+#include "actuator.h"
+#include "connecteddevice.h"
+
 #include <QObject>
 #include <QList>
 #include <QHash>
 #include <QStringList>
-#include "../Actuators/actuator.h"
-#include "connecteddevice.h"
 
-class Device : public QObject
+class QWEBDOMOSHARED_EXPORT Device : public QObject
 {
     Q_OBJECT
 public:
