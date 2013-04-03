@@ -6,8 +6,8 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QString domain("local");
-    QWServer *server= new QWServer(domain);
+    QWServer server("local");
+    Q_UNUSED(server);
 
     return a.exec();
 }
