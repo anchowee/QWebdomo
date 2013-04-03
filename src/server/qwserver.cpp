@@ -1,12 +1,15 @@
 #include "qwserver.h"
+#include "bonjourrecord.h"
+
 #include <QHostInfo>
 
-QWServer::QWServer(QString name, QObject *parent) :
-    QXmppServer(parent), _name(name)
+QWServer::QWServer(const QString &domain, QObject *parent) :
+    QXmppServer(parent)
 {
+    setDomain(domain);
     setPasswordChecker(new PasswordChecker);
     listenForClients();
     listenForServers();
-    _avahiPublisher = new QAvahiServicePublisher(this);
-    _avahiPublisher->publish(QHostInfo::localHostName(), "_xmpp-server._tcp", 5269, "Webdomo XMPP local server");
+    _avahiPublisher = new BonjourServiceRegister(this);
+    _avahiPublisher->registerService(BonjourRecord(QHostInfo::localHostName(), "_xmpp-server._tcp", "local"), 5269);
 }

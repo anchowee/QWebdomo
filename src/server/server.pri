@@ -1,7 +1,12 @@
-LIBS += -lavahi-common -lavahi-client -lavahi-qt4
+LIBS += -ldns_sd
 
-SOURCES += server/qwserver.cpp \
-    server/qavahiservicepublisher.cpp
+SOURCES += $$PWD/qwserver.cpp \
+    $$PWD/bonjourserviceregister.cpp
 
-HEADERS += server/qwserver.h \
-    server/qavahiservicepublisher.h
+HEADERS += $$PWD/qwserver.h \
+    $$PWD/bonjourserviceregister.h \
+    $$PWD/bonjourrecord.h
+
+unix {
+    LIBS += -ldns_sd
+}

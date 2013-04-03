@@ -3,9 +3,9 @@
 
 #include "qwebdomo_global.h"
 #include "actuator.h"
-#include "connecteddevice.h"
 
 #include <qxmpp/QXmppClient.h>
+#include <qxmpp/QXmppMucManager.h>
 
 #include <QObject>
 #include <QList>
@@ -22,11 +22,8 @@ public slots:
     void parseQuery(const QStringList &subtypes, const QHash<Commands, int> &commands);
 
 private:
-    void sendTo(const ConnectedDevice &child, const QStringList &subtypes, const QHash<Commands, int> &commands);
-
-private:
     QList<Actuator*> *_actuators; //TODO: arrays of actuators
-    
+    QXmppMucManager *_mucManager;
 };
 
 #endif // DEVICE_H

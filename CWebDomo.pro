@@ -1,5 +1,3 @@
 TEMPLATE = subdirs
 
-SUBDIRS += \
-    Utils \
-    src
+SUBDIRS += src
