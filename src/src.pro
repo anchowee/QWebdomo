@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       -= gui
+QT += network
 
 TARGET = qwebdomo
 TEMPLATE = lib
@@ -18,21 +19,9 @@ HEADERS += device.h \
     qwebdomo_global.h \
     connecteddevice.h \
 
-!isEmpty(QWEBDOMO_ENABLE_XMPP){
-    DEFINES += ENABLE_XMPP
-    include(xmpp/xmpp.pri)
-}
+LIBS += -lqxmpp
 
-!isEmpty(QWEBDOMO_ENABLE_SERIAL){
-    DEFINES += ENABLE_SERIAL
-    include(serial/serial.pri)
-}
-
-unix:!symbian {
-    maemo5 {
-        target.path = /opt/usr/lib
-    } else {
-        target.path = /usr/lib
-    }
-    INSTALLS += target
+!isEmpty(QWD_USE_SERVER){
+    DEFINES += QWD_USE_SERVER
+    include(server/server.pri)
 }

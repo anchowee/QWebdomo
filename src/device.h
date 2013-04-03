@@ -5,19 +5,18 @@
 #include "actuator.h"
 #include "connecteddevice.h"
 
+#include <qxmpp/QXmppClient.h>
+
 #include <QObject>
 #include <QList>
 #include <QHash>
 #include <QStringList>
 
-class QWEBDOMOSHARED_EXPORT Device : public QObject
+class QWEBDOMOSHARED_EXPORT Device : public QXmppClient
 {
     Q_OBJECT
 public:
-    explicit Device(QObject *parent = 0, ConnectedDevice *parentDevice = 0);
-
-    void addChild(ConnectedDevice *child);
-    void removeChild(const ConnectedDevice &child);
+    explicit Device(QObject *parent = 0);
     
 public slots:
     void parseQuery(const QStringList &subtypes, const QHash<Commands, int> &commands);
@@ -27,8 +26,6 @@ private:
 
 private:
     QList<Actuator*> *_actuators; //TODO: arrays of actuators
-    QList<ConnectedDevice*> *_childs; //TODO: maybe a QMap is better for searches
-    ConnectedDevice *_parent;
     
 };
 

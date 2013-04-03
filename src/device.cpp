@@ -1,6 +1,6 @@
 #include "device.h"
 
-Device::Device(QObject *parent, ConnectedDevice *parentDevice) :
+Device::Device(QObject *parent) :
     QObject(parent), _parent(parentDevice)
 {
     connect(_parent, SIGNAL(queryRecived(QList<QString>,QHash<Commands,int>)), this, SLOT(parseQuery(QStringList,QHash<Commands,int>)));

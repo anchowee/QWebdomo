@@ -1,12 +1,12 @@
-#ifndef SRC_GLOBAL_H
-#define SRC_GLOBAL_H
+#ifndef QWEBDOMO_GLOBAL_H
+#define QWEBDOMO_GLOBAL_H
 
 #include <QtCore/qglobal.h>
 
-#if defined(SRC_LIBRARY)
-#  define SRCSHARED_EXPORT Q_DECL_EXPORT
+#if defined(QWEBDOMO_LIBRARY)
+#  define QWEBDOMOSHARED_EXPORT Q_DECL_EXPORT
 #else
-#  define SRCSHARED_EXPORT Q_DECL_IMPORT
+#  define QWEBDOMOSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif // SRC_GLOBAL_H
+#endif // QWEBDOMO_GLOBAL_H
