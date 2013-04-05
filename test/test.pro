@@ -3,4 +3,5 @@ include(../src/src.pro)
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    server_example
+    server_example \
+    client

@@ -12,10 +12,12 @@ TEMPLATE = lib
 
 DEFINES += SRC_LIBRARY
 
-SOURCES += $$PWD/device.cpp \
+SOURCES += $$PWD/QWDevice.cpp \
+    $$PWD/QWDeviceConfiguration.cpp
 
-HEADERS += $$PWD/device.h \
+HEADERS += $$PWD/QWDevice.h \
     $$PWD/qwebdomo_global.h \
+    $$PWD/QWDeviceConfiguration.h
 
 LIBS += -lqxmpp
 
