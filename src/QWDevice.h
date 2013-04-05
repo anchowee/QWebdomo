@@ -24,6 +24,8 @@ public slots:
 
 private slots:
     void startChat();
+    void addDevice(const QString &jid);
+    void parseMessage(const QXmppMessage &message);
 
 private:
     //QList<Actuator*> *_actuators; //TODO: arrays of actuators
