@@ -1,13 +1,16 @@
 #ifndef QWAPPLIANCE_H
 #define QWAPPLIANCE_H
 
+#include"qwebdomo_global.h"
+
 #include <QHash>
 #include <QStringList>
 #include <QSharedDataPointer>
+#include <QVariant>
 
 class QWAppliancePrivate;
 
-class QWAppliance
+class QWEBDOMOSHARED_EXPORT QWAppliance
 {
 public:
     QWAppliance();

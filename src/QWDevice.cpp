@@ -24,6 +24,13 @@ QWDevice::QWDevice(const QWDeviceConfiguration &configuration, QObject *parent) 
     connect(this, SIGNAL(connected()), this, SLOT(startChat()));
 }
 
+void QWDevice::addActuator(QWActuator &actuator)
+{
+    foreach (QString st, actuator.getSubtypes()) {
+        _actuators->insert(st, QSharedPointer<QWActuator>(&actuator));
+    };
+}
+
 void QWDevice::startChat()
 {
     _room = _mucManager->addRoom(_configuration.roomJid());

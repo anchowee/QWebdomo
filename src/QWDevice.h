@@ -18,6 +18,8 @@ class QWEBDOMOSHARED_EXPORT QWDevice : public QXmppClient
     Q_OBJECT
 public:
     explicit QWDevice(const QWDeviceConfiguration &configuration, QObject *parent = 0);
+
+    void addActuator(QWActuator &actuator);
     
 public slots:
     //void parseQuery(const QStringList &subtypes, const QHash<Commands, int> &commands);
@@ -28,7 +30,7 @@ private slots:
     void parseMessage(const QXmppMessage &message);
 
 private:
-    QList<QWActuator> *_actuators; //TODO: arrays of actuators
+    QHash<QString, QSharedPointer<QWActuator> > *_actuators;
     QWDeviceConfiguration _configuration;
     QXmppMucManager *_mucManager;
     QXmppMucRoom *_room;

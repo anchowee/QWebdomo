@@ -1,6 +1,6 @@
 #include "QWAppliance.h"
 
-class QWAppliancePrivate : QSharedData {
+class QWAppliancePrivate : public QSharedData {
 public:
     QWAppliancePrivate(){}
 
@@ -13,12 +13,17 @@ public:
     QHash<QString, QVariant> attributes;
 };
 
-QWAppliance::QWAppliance()
+QWAppliance::QWAppliance() :
+    d(new QWAppliancePrivate)
 {
 }
 
 QWAppliance::QWAppliance(const QWAppliance &other) :
     d(other.d)
+{
+}
+
+QWAppliance::~QWAppliance()
 {
 }
 
