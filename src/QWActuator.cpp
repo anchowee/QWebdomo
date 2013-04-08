@@ -2,5 +2,4 @@
 
 QWActuator::QWActuator(QObject *parent) :
     QObject(parent)
-{
-}
+{}

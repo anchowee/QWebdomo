@@ -3,7 +3,7 @@
 
 #include "qwebdomo_global.h"
 #include "QWDeviceConfiguration.h"
-//#include "actuator.h"
+#include "QWActuator.h"
 
 #include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppMucManager.h>
@@ -28,7 +28,7 @@ private slots:
     void parseMessage(const QXmppMessage &message);
 
 private:
-    //QList<Actuator*> *_actuators; //TODO: arrays of actuators
+    QList<QWActuator> *_actuators; //TODO: arrays of actuators
     QWDeviceConfiguration _configuration;
     QXmppMucManager *_mucManager;
     QXmppMucRoom *_room;
