@@ -12,10 +12,10 @@ class QWActuator : public QObject
 public:
     explicit QWActuator(QObject *parent = 0);
 
-    QStringList getSubtypes();
+    QStringList getSubtypes() const;
 
-    virtual void put(const QStringList &subtypes, const QMap<QString, QVariant> &attributes) = 0;
-    virtual void get(const QStringList &subtypes, const QMap<QString, QVariant> &attributes) = 0;
+    virtual void put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const = 0;
+    virtual void get(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const = 0;
     
 private:
     QList<QWAppliance> *_appliances;
