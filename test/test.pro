@@ -1,5 +1,3 @@
-include(../src/src.pro)
-
 TEMPLATE = subdirs
 
 SUBDIRS += \

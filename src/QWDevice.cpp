@@ -8,16 +8,24 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
+class QWDevicePrivate {
+public:
+    QWDevicePrivate(const QWDeviceConfiguration &conf) :
+        configuration(conf) {}
+
+    QHash<QString, QSharedPointer<const QWActuator> > actuators;
+    QWDeviceConfiguration configuration;
+    QXmppMucManager mucManager;
+};
+
 QWDevice::QWDevice(const QWDeviceConfiguration &configuration, QObject *parent) :
-    QXmppClient(parent), _configuration(configuration)
+    QXmppClient(parent), d(new QWDevicePrivate(configuration))
 {
 #ifdef QT_DEBUG
     logger()->setLoggingType(QXmppLogger::StdoutLogging);
 #endif
-    _actuators = new QHash<QString, QSharedPointer<const QWActuator> >();
-    _mucManager = new QXmppMucManager;
-    addExtension(_mucManager);
-    QXmppConfiguration *conf = dynamic_cast<QXmppConfiguration*>(&_configuration);
+    addExtension(&d->mucManager);
+    QXmppConfiguration *conf = dynamic_cast<QXmppConfiguration*>(&d->configuration);
     connectToServer(*conf);
 
     connect(this, SIGNAL(connected()), this, SLOT(startChat()));
@@ -25,15 +33,14 @@ QWDevice::QWDevice(const QWDeviceConfiguration &configuration, QObject *parent) 
 
 QWDevice::~QWDevice()
 {
-    delete _actuators;
-    delete _mucManager;
+    delete d;
 }
 
 void QWDevice::addActuator(const QWActuator &actuator)
 {
     QStringList subtypes = actuator.getSubtypes();
     foreach (QString st, subtypes) {
-        _actuators->insert(st, QSharedPointer<const QWActuator>(&actuator));
+        d->actuators.insert(st, QSharedPointer<const QWActuator>(&actuator));
     };
 }
 
@@ -42,9 +49,9 @@ void QWDevice::executeQuery(const QStringList &subtypes, const QHash<QString, QV
 #ifdef QT_DEBUG
     qDebug() << "Executing query";
 #endif
-    QList<QSharedPointer<const QWActuator> > matches = _actuators->values(subtypes[0]);
+    QList<QSharedPointer<const QWActuator> > matches = d->actuators.values(subtypes[0]);
     for(int i = 1; i<subtypes.length(); i++){
-        foreach(QSharedPointer<const QWActuator> ptr, _actuators->values(subtypes[i])){
+        foreach(QSharedPointer<const QWActuator> ptr, d->actuators.values(subtypes[i])){
             if(!matches.contains(ptr)){
                 matches.removeAll(ptr);
             }
@@ -59,12 +66,12 @@ void QWDevice::executeQuery(const QStringList &subtypes, const QHash<QString, QV
 
 void QWDevice::startChat()
 {
-    _room = _mucManager->addRoom(_configuration.roomJid());
-    _room->setNickName(configuration().jid());
-    _room->join();
+    QXmppMucRoom *room = d->mucManager.addRoom(d->configuration.roomJid());
+    room->setNickName(configuration().jid());
+    room->join();
 
-    connect(_room, SIGNAL(participantAdded(QString)), this, SLOT(addDevice(QString)));
-    connect(_room, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(parseMessage(QXmppMessage)));
+    connect(room, SIGNAL(participantAdded(QString)), this, SLOT(addDevice(QString)));
+    connect(room, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(parseMessage(QXmppMessage)));
 }
 
 void QWDevice::addDevice(const QString &jid)
@@ -104,4 +111,13 @@ void QWDevice::parseMessage(const QXmppMessage &message)
         }
     }
     executeQuery(st, cmds);
+}
+
+void QWDevice::sendMessage(const QString &bareJid, ActionType action, const QJsonValue &content)
+{
+    QJsonObject jObject;
+    jObject.insert("action", QJsonValue(int(action)));
+    jObject.insert("content", content);
+    QString message(QJsonDocument(jObject).toJson());
+    sendMessage(bareJid, message);
 }
