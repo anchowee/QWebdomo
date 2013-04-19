@@ -18,18 +18,27 @@ class QWDevicePrivate;
 class QWEBDOMOSHARED_EXPORT QWDevice : public QXmppClient
 {
     Q_OBJECT
-    Q_ENUMS(ActionType)
 public:
+
+    enum QueryType{
+        Get,
+        Put
+    };
 
     explicit QWDevice(const QWDeviceConfiguration &configuration, QObject *parent = 0);
     ~QWDevice();
 
     void addActuator(const QWActuator &actuator);
 
+    void addParser(QWParser *parser);
+    void removeParser(QWParser *parser);
+
 public slots:
-    void executeQuery(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
+    void doGet(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
+    void doPut(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
+    void executeQuery(QueryType type, const QStringList &subtypes, const QHash<QString, QVariant> &commands);
     void sendMessage(const QString &bareJid, const QString &message);
-    void sendMessage(const QString &bareJid, QWParser::ParserType action, const QJsonValue &content);
+    void sendMessage(const QString &bareJid, QWParser::MessageType action, const QJsonValue &content);
 
 private slots:
     void startChat();

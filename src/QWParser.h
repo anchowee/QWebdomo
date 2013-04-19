@@ -1,31 +1,35 @@
 #ifndef QWPARSER_H
 #define QWPARSER_H
 
-#include <QObject>
+#include "qwebdomo_global.h"
 
-class QWParser : public QObject
+#include <QObject>
+#include <QJsonValue>
+#include <QStringList>
+#include <QHash>
+#include <QVariant>
+
+class QWEBDOMOSHARED_EXPORT QWParser : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(ParserType)
+    Q_ENUMS(MessageType)
 public:
 
-    enum ParserType {
-        NullParser = 0,
-        GetParser,
-        PutParser,
-        QueryParser
+    enum MessageType {
+        GetMessage,
+        PutMessage,
+        QueryMessage
     };
 
     explicit QWParser(QObject *parent = 0);
-
-    ParserType type() const;
     
 signals:
+    void sendMessage(const QString &bareJid, const QString &message);
+    void doPut(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
+    void doGet(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
     
 public slots:
-
-protected:
-    const ParserType _type = NullParser;
+    virtual void parse(const QString &bareJid, MessageType type, const QJsonValue &content) = 0;
 };
 
 #endif // QWPARSER_H

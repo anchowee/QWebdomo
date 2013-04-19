@@ -16,6 +16,7 @@ public:
     QHash<QString, QSharedPointer<const QWActuator> > actuators;
     QWDeviceConfiguration configuration;
     QXmppMucManager mucManager;
+    QList<QWParser*> parsers;
 };
 
 QWDevice::QWDevice(const QWDeviceConfiguration &configuration, QObject *parent) :
@@ -44,7 +45,39 @@ void QWDevice::addActuator(const QWActuator &actuator)
     };
 }
 
-void QWDevice::executeQuery(const QStringList &subtypes, const QHash<QString, QVariant> &commands)
+void QWDevice::addParser(QWParser *parser)
+{
+    if(!d->parsers.contains(parser)){
+        d->parsers.append(parser);
+
+        connect(parser, SIGNAL(doGet(QStringList,QHash<QString,QVariant>)),
+                this, SLOT(doGet(QStringList,QHash<QString,QVariant>)));
+
+        connect(parser, SIGNAL(doPut(QStringList,QHash<QString,QVariant>)),
+                this, SLOT(doPut(QStringList,QHash<QString,QVariant>)));
+
+        connect(parser, SIGNAL(sendMessage(QString,QString)),
+                this, SLOT(sendMessage(QString,QString)));
+    }
+}
+
+void QWDevice::removeParser(QWParser *parser)
+{
+    d->parsers.removeOne(parser);
+    delete parser;
+}
+
+void QWDevice::doGet(const QStringList &subtypes, const QHash<QString, QVariant> &commands)
+{
+    executeQuery(Get, subtypes, commands);
+}
+
+void QWDevice::doPut(const QStringList &subtypes, const QHash<QString, QVariant> &commands)
+{
+    executeQuery(Put, subtypes, commands);
+}
+
+void QWDevice::executeQuery(QueryType type, const QStringList &subtypes, const QHash<QString, QVariant> &commands)
 {
 #ifdef QT_DEBUG
     qDebug() << "Executing query";
@@ -59,7 +92,11 @@ void QWDevice::executeQuery(const QStringList &subtypes, const QHash<QString, QV
     }
     if(matches.length() > 0){
         foreach(QSharedPointer<const QWActuator> ptr, matches){
-            ptr->put(subtypes, commands);
+            if(type == Get){
+                ptr->get(subtypes, commands);
+            } else {
+                ptr->put(subtypes, commands);
+            }
         }
     }
 }
@@ -86,34 +123,18 @@ void QWDevice::parseMessage(const QXmppMessage &message)
 #ifdef QT_DEBUG
     qDebug() << "Message recived: " << message.body();
 #endif
-
     QJsonDocument doc = QJsonDocument::fromBinaryData(message.body().toUtf8());
     QJsonObject obj = doc.object();
+    QJsonValue action = obj.value("action");
+    QWParser::MessageType type = (QWParser::MessageType)action.toString().toInt();
+    QJsonValue content = obj.value("content");
 
-    //TODO: add parser object to allow extensible parsing capabilities
-    QStringList st;
-    QJsonValue subtypes = obj.value("subtypes");
-    if(subtypes.isArray()){
-        QJsonArray stArray = subtypes.toArray();
-        for(int i=0; i< stArray.size(); i++){
-            if(stArray.at(i).isString()){
-                st.append(stArray.at(i).toString());
-            }
-        }
+    for(int i = 0; i<d->parsers.length(); i++){
+        d->parsers.at(i)->parse(message.from(), type, content);
     }
-
-    QHash<QString, QVariant> cmds;
-    QJsonValue commands = obj.value("commands");
-    if(commands.isObject()){
-        QJsonObject cmdObj = commands.toObject();
-        foreach(QString k, cmdObj.keys()){
-            cmds.insert(k, cmdObj.value(k).toVariant());
-        }
-    }
-    executeQuery(st, cmds);
 }
 
-void QWDevice::sendMessage(const QString &bareJid, ActionType action, const QJsonValue &content)
+void QWDevice::sendMessage(const QString &bareJid, QWParser::MessageType action, const QJsonValue &content)
 {
     QJsonObject jObject;
     jObject.insert("action", QJsonValue(int(action)));
