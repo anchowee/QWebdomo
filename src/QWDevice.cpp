@@ -67,6 +67,11 @@ void QWDevice::removeParser(QWParser *parser)
     delete parser;
 }
 
+QString QWDevice::roomJid() const
+{
+    return d->configuration.roomJid();
+}
+
 void QWDevice::doGet(const QStringList &subtypes, const QHash<QString, QVariant> &commands)
 {
     executeQuery(Get, subtypes, commands);

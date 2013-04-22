@@ -1,0 +1,3 @@
+module Webdomo.Components
+plugin qml
+

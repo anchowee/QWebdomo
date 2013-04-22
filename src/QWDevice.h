@@ -32,6 +32,7 @@ public:
 
     void addParser(QWParser *parser);
     void removeParser(QWParser *parser);
+    QString roomJid() const;
 
 public slots:
     void doGet(const QStringList &subtypes, const QHash<QString, QVariant> &commands);

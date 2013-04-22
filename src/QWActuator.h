@@ -16,6 +16,9 @@ public:
 
     virtual void put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const = 0;
     virtual void get(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const = 0;
+
+signals:
+    void appliancesChanged();
     
 private:
     QList<QWAppliance> *_appliances;
