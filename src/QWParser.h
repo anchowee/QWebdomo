@@ -27,6 +27,7 @@ signals:
     void sendMessage(const QString &bareJid, const QString &message);
     void doPut(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
     void doGet(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
+    void notify(const QString &message);
     
 public slots:
     virtual void parse(const QString &bareJid, MessageType type, const QJsonValue &content) = 0;

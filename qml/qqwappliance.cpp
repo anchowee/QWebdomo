@@ -8,5 +8,15 @@ QQWAppliance::QQWAppliance(QObject *parent) :
 
 QQmlListProperty<QWAppProperty> QQWAppliance::properties()
 {
-    return QQmlListProperty<QWAppProperty>(this,0,)
+    return QQmlListProperty<QWAppProperty>(this, _properties);
+}
+
+QString QQWAppliance::name() const
+{
+    return _name;
+}
+
+QStringList QQWAppliance::subtypes() const
+{
+    return _subtypes;
 }

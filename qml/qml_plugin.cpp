@@ -12,7 +12,7 @@ void QmlPlugin::registerTypes(const char *uri)
     qmlRegisterType<QWController>(uri, 0, 1, "Controller");
     qmlRegisterType<QQWDeviceConfiguration>(uri, 0, 1, "DeviceConfiguration");
     qmlRegisterType<QQWAppliance>(uri, 0, 1, "Appliance");
-    qmlRegisterType<QWActuatorProperty(uri, 0, 1, "Appl")
+    qmlRegisterType<QWAppProperty>(uri, 0, 1, "ApplianceProperty");
 }
 
 

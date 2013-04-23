@@ -12,14 +12,20 @@ QWController::~QWController()
 }
 
 
-QWDeviceConfiguration *QWController::configuration() const
+QQWDeviceConfiguration *QWController::configuration() const
 {
     return _configuration;
 }
 
-void QWController::setConfiguration(QWDeviceConfiguration *conf)
+void QWController::setConfiguration(QQWDeviceConfiguration *conf)
 {
     _configuration = conf;
     _device = new QWDevice(_configuration->getConfiguration(), this);
     emit configurationChanged();
+}
+
+
+QQmlListProperty<QWAppliance> QWController::appliances()
+{
+    return QQmlListProperty<QWAppliance>(this, _appliances);
 }

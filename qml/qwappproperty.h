@@ -2,6 +2,7 @@
 #define QWAPPPROPERTY_H
 
 #include <QObject>
+#include <QVariant>
 
 class QWAppProperty : public QObject
 {
@@ -19,9 +20,13 @@ public:
     QVariant value() const;
     void setValue(const QVariant &value);
 
+signals:
+    void nameChanged();
+    void valueChanged();
+
 private:
     QString _name;
-    QVariant *_value;
+    QVariant _value;
     
 };
 

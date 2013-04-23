@@ -58,6 +58,9 @@ void QWDevice::addParser(QWParser *parser)
 
         connect(parser, SIGNAL(sendMessage(QString,QString)),
                 this, SLOT(sendMessage(QString,QString)));
+
+        connect(parser, SIGNAL(notify(QString)),
+                this, SIGNAL(notify(QString)));
     }
 }
 

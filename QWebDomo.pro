@@ -2,6 +2,6 @@ TEMPLATE = subdirs
 
 SUBDIRS += src test
 
-!isEmpty(QML_PLUGINS){
+!isEmpty(WITH_QML_PLUGINS){
     SUBDIRS += qml
 }

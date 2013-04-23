@@ -1,7 +1,7 @@
 #ifndef QQWAPPLIANCE_H
 #define QQWAPPLIANCE_H
 
-#include "QWAppliance.h"
+#include "../src/QWAppliance.h"
 #include "qwappproperty.h"
 
 #include <QObject>
@@ -20,14 +20,17 @@ public:
 
     //properties
     QQmlListProperty<QWAppProperty> properties();
-    
-signals:
-    
-public slots:
+
+    //name
+    QString name() const;
+
+    //subtypes
+    QStringList subtypes() const;
 
 private:
-    QStringList *_subtypes;
-
+    QString _name;
+    QStringList _subtypes;
+    QList<QWAppProperty*> _properties;
 };
 
 #endif // QQWAPPLIANCE_H

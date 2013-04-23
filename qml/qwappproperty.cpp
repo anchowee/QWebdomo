@@ -17,10 +17,10 @@ void QWAppProperty::setName(const QString &name)
 
 QVariant QWAppProperty::value() const
 {
-    return *_value;
+    return _value;
 }
 
 void QWAppProperty::setValue(const QVariant &value)
 {
-    _value = new QVariant(value);
+    _value = value;
 }

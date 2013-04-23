@@ -34,6 +34,9 @@ public:
     void removeParser(QWParser *parser);
     QString roomJid() const;
 
+signals:
+    void notify(const QString &message);
+
 public slots:
     void doGet(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
     void doPut(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
