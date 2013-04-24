@@ -52,5 +52,8 @@ QQmlListProperty<QQWAppliance> QWController::appliances()
 
 void QWController::updateAppliances(const QStringList &subtypes, const QHash<QString, QVariant> &values)
 {
-    //TODO: implement
+    foreach(QQWAppliance *app, _appliances){
+        if(app->match(subtypes)){
+        }
+    }
 }

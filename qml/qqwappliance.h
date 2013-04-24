@@ -34,6 +34,7 @@ public:
 
     //properties
     QQmlListProperty<QWAppProperty> properties();
+    void setProperties(const QHash<QString, QVariant> &properties);
 
     //name
     QString name() const;
@@ -42,6 +43,8 @@ public:
     //subtypes
     QStringList subtypes() const;
     void setSubtypes(const QStringList &subtypes);
+
+    bool match(const QStringList &subtypes);
 
 signals:
     void propertiesChanged();

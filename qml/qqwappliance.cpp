@@ -27,6 +27,16 @@ QQmlListProperty<QWAppProperty> QQWAppliance::properties()
     return QQmlListProperty<QWAppProperty>(this, _properties);
 }
 
+void QQWAppliance::setProperties(const QHash<QString, QVariant> &properties)
+{
+    for(int i = 0; i< _properties.length(); i++){
+        if(properties.contains(_properties.at(i)->name())){
+            properties[_properties.at(i)->name()] = _properties.at(i)->value();
+        }
+    }
+    emit propertiesChanged();
+}
+
 QString QQWAppliance::name() const
 {
     return _name;
@@ -45,4 +55,16 @@ QStringList QQWAppliance::subtypes() const
 void QQWAppliance::setSubtypes(const QStringList &subtypes)
 {
     _subtypes = subtypes;
+}
+
+bool QQWAppliance::match(const QStringList &subtypes)
+{
+    for(int i = 0; i < subtypes.length(); i++){
+        bool match = false;
+        for(int j = 0; j < _subtypes.length(); j++){
+            if(subtypes[i] == _subtypes[j])
+                match = true;
+        }
+        if(!match) return false;
+    }
 }
