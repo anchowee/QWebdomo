@@ -16,6 +16,11 @@
 
 #include "QWActuator.h"
 
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonValue>
+
 QWActuator::QWActuator(QObject *parent) :
     QObject(parent)
 {}
@@ -27,4 +32,20 @@ QStringList QWActuator::getSubtypes() const
         subtypes.append(_appliances->at(i).subtypes());
     }
     return subtypes;
+}
+
+QString QWActuator::formatResponse(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const
+{
+    QJsonObject commands;
+    QHash<QString, QVariant>::const_iterator i;
+    for(i = attributes.begin(); i != attributes.end(); ++i){
+        commands.insert(i.key(), QJsonValue::fromVariant(i.value()));
+    }
+    QJsonObject content;
+    content.insert("subtypes", QJsonArray::fromStringList(subtypes));
+    content.insert("commands", commands);
+    QJsonObject jObject;
+    jObject.insert("action", QJsonValue(QString("NOTIFY")));
+    jObject.insert("content", content);
+    return QString(QJsonDocument(jObject).toJson());
 }

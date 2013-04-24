@@ -30,12 +30,15 @@ public:
 
     QStringList getSubtypes() const;
 
-    virtual void put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const = 0;
-    virtual void get(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const = 0;
+    virtual QString put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const = 0;
+    virtual QString get(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const = 0;
 
 signals:
     void appliancesChanged();
     
+private:
+    QString formatResponse(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const;
+
 private:
     QList<QWAppliance> *_appliances;
 

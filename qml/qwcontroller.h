@@ -17,8 +17,9 @@
 #ifndef QWCONTROLLER_H
 #define QWCONTROLLER_H
 
-#include "../src/QWDevice.h"
+#include "qwcommanderdevice.h"
 #include "qqwdeviceconfiguration.h"
+#include "qqwappliance.h"
 
 #include <QObject>
 #include <QQmlListProperty>
@@ -27,14 +28,14 @@ class QWController : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(QWController)
-    Q_PROPERTY(QQmlListProperty<QWAppliance> appliances READ appliances NOTIFY appliancesChanged)
+    Q_PROPERTY(QQmlListProperty<QQWAppliance> appliances READ appliances NOTIFY appliancesChanged)
     Q_PROPERTY(QQWDeviceConfiguration *configuration READ configuration WRITE setConfiguration NOTIFY configurationChanged)
 public:
     QWController(QObject *parent = 0);
     ~QWController();
 
     //appliances
-    QQmlListProperty<QWAppliance> appliances();
+    QQmlListProperty<QQWAppliance> appliances();
 
     //Configuration
     QQWDeviceConfiguration *configuration() const;
@@ -44,13 +45,13 @@ signals:
     void appliancesChanged();
     void configurationChanged();
 
-public slots:
-
+private slots:
+    void updateAppliances(const QStringList &subtypes, const QHash<QString, QVariant> &values);
 
 private:
-    QWDevice *_device;
+    QWCommanderDevice *_device;
     QQWDeviceConfiguration *_configuration;
-    QList<QWAppliance*> _appliances;
+    QList<QQWAppliance*> _appliances;
 };
 
 #endif // QWCONTROLLER_H

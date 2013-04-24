@@ -32,7 +32,17 @@ QString QQWAppliance::name() const
     return _name;
 }
 
+void QQWAppliance::setName(const QString &name)
+{
+    _name = name;
+}
+
 QStringList QQWAppliance::subtypes() const
 {
     return _subtypes;
+}
+
+void QQWAppliance::setSubtypes(const QStringList &subtypes)
+{
+    _subtypes = subtypes;
 }

@@ -16,10 +16,9 @@
 
 #include "qwcontroller.h"
 
-QWController::QWController(QObject *parent)
+QWController::QWController(QObject *parent) : QObject(parent)
 {
-    _configuration = new QQWDeviceConfiguration;
-    _device = new QWDevice(_configuration->getConfiguration(), this);
+    setConfiguration(new QWDeviceConfiguration);
 }
 
 QWController::~QWController()
@@ -36,12 +35,22 @@ QQWDeviceConfiguration *QWController::configuration() const
 void QWController::setConfiguration(QQWDeviceConfiguration *conf)
 {
     _configuration = conf;
-    _device = new QWDevice(_configuration->getConfiguration(), this);
+    _device = new QWCommanderDevice(_configuration->getConfiguration(), this);
+
+    connect(_device, SIGNAL(updateAppliances(QStringList,QHash<QString,QVariant>)),
+            this, SLOT(updateAppliances(QStringList,QHash<QString,QVariant>)));
+
     emit configurationChanged();
 }
 
 
-QQmlListProperty<QWAppliance> QWController::appliances()
+QQmlListProperty<QQWAppliance> QWController::appliances()
 {
-    return QQmlListProperty<QWAppliance>(this, _appliances);
+    return QQmlListProperty<QQWAppliance>(this, _appliances);
+}
+
+
+void QWController::updateAppliances(const QStringList &subtypes, const QHash<QString, QVariant> &values)
+{
+    //TODO: implement
 }

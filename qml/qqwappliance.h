@@ -28,20 +28,23 @@ class QQWAppliance : public QObject
     Q_OBJECT
     Q_PROPERTY(QString name READ name)
     Q_PROPERTY(QStringList subtypes READ subtypes)
-    Q_PROPERTY(QQmlListProperty<QWAppProperty> properties READ properties)
+    Q_PROPERTY(QQmlListProperty<QWAppProperty> properties READ properties NOTIFY propertiesChanged)
 public:
     explicit QQWAppliance(QObject *parent = 0);
-
-    void setSubtypes(const QStringList &subtypes);
 
     //properties
     QQmlListProperty<QWAppProperty> properties();
 
     //name
     QString name() const;
+    void setName(const QString &name);
 
     //subtypes
     QStringList subtypes() const;
+    void setSubtypes(const QStringList &subtypes);
+
+signals:
+    void propertiesChanged();
 
 private:
     QString _name;

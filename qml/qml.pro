@@ -12,14 +12,16 @@ SOURCES += \
     qwcontroller.cpp \
     qqwdeviceconfiguration.cpp \
     qqwappliance.cpp \
-    qwappproperty.cpp
+    qwappproperty.cpp \
+    qwcommanderdevice.cpp
 
 HEADERS += \
     qml_plugin.h \
     qwcontroller.h \
     qqwdeviceconfiguration.h \
     qqwappliance.h \
-    qwappproperty.h
+    qwappproperty.h \
+    qwcommanderdevice.h
 
 OTHER_FILES = qmldir
 

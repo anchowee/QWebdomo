@@ -16,16 +16,14 @@ SOURCES += $$PWD/QWDevice.cpp \
     $$PWD/QWDeviceConfiguration.cpp \
     $$PWD/QWActuator.cpp \
     $$PWD/QWAppliance.cpp \
-    $$PWD/QWParser.cpp \
-    $$PWD/QWActionParser.cpp
+    $$PWD/QWControlDevice.cpp
 
 HEADERS += $$PWD/QWDevice.h \
     $$PWD/qwebdomo_global.h \
     $$PWD/QWDeviceConfiguration.h \
     $$PWD/QWActuator.h \
     $$PWD/QWAppliance.h \
-    $$PWD/QWParser.h \
-    $$PWD/QWActionParser.h
+    $$PWD/QWControlDevice.h
 
 LIBS += -lqxmpp
 
