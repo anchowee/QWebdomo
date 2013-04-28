@@ -29,9 +29,21 @@ QQmlListProperty<QWAppProperty> QQWAppliance::properties()
 
 void QQWAppliance::setProperties(const QHash<QString, QVariant> &properties)
 {
+    QHash<QString, QVariant>::const_iterator it;
+    for(it = properties.begin(); it != properties.end(); ++it){
+        QWAppProperty *prop = new QWAppProperty();
+        prop->setName(it.key());
+        prop->setValue(it.value());
+        _properties.append(prop);
+    }
+    emit propertiesChanged();
+}
+
+void QQWAppliance::updateProperties(const QHash<QString, QVariant> &properties)
+{
     for(int i = 0; i< _properties.length(); i++){
         if(properties.contains(_properties.at(i)->name())){
-            properties[_properties.at(i)->name()] = _properties.at(i)->value();
+            _properties.at(i)->setValue(properties[_properties.at(i)->name()]);
         }
     }
     emit propertiesChanged();

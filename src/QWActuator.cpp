@@ -30,22 +30,44 @@ QStringList QWActuator::getSubtypes() const
     QStringList subtypes;
     for(int i = 0; i < _appliances->length(); i++){
         subtypes.append(_appliances->at(i).subtypes());
+        subtypes.append(_appliances->at(i).name());
     }
     return subtypes;
 }
 
-QString QWActuator::formatResponse(const QStringList &subtypes, const QHash<QString, QVariant> &attributes) const
+QString QWActuator::doGet(QStringList &subtypes, QHash<QString, QVariant> &attributes)
 {
-    QJsonObject commands;
-    QHash<QString, QVariant>::const_iterator i;
-    for(i = attributes.begin(); i != attributes.end(); ++i){
-        commands.insert(i.key(), QJsonValue::fromVariant(i.value()));
+    return formatResponse("GET", get(subtypes, attributes));
+}
+
+QString QWActuator::doPut(QStringList &subtypes, QHash<QString, QVariant> &attributes)
+{
+    return formatResponse("PUT", put(subtypes, attributes));
+}
+
+QString QWActuator::formatResponse(const QString &respType, const QList<QWAppliance *> &appliances) const
+{
+    // it returns an object like:
+    // { action:"NOTIFY_GET", content:[{name: "example", subtypes: [], attributes:{k:v}}]}
+    QJsonArray appliancesArray;
+    QList<QWAppliance*>::const_iterator it;
+    for(it = appliances.constBegin(); it != appliances.constEnd(); ++it){
+        QJsonObject app;
+
+        QJsonObject attributes;
+        QHash<QString, QVariant>::const_iterator hi;
+        for(hi = it->attributes().constBegin(); hi != it->attributes().constEnd(); ++hi){
+            attributes.insert(hi.key(), QJsonValue::fromVariant(hi.value()));
+        }
+
+        app.insert("name", QJsonValue(it->name()));
+        app.insert("subtypes", QJsonArray::fromStringList(it->subtypes()));
+        app.insert("attributes", attributes);
+        appliancesArray.append(app);
     }
-    QJsonObject content;
-    content.insert("subtypes", QJsonArray::fromStringList(subtypes));
-    content.insert("commands", commands);
-    QJsonObject jObject;
-    jObject.insert("action", QJsonValue(QString("NOTIFY")));
-    jObject.insert("content", content);
-    return QString(QJsonDocument(jObject).toJson());
+
+    QJsonObject response;
+    response.insert("action", QJsonValue(QString("NOTIFY_%1").arg(respType)));
+    response.insert("content", appliancesArray);
+    return QString(QJsonDocument(response).toJson());
 }

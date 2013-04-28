@@ -1,14 +1,23 @@
 #include "qwcommanderdevice.h"
 
+#include <QJsonObject>
+#include <QJsonArray>
+
 QWCommanderDevice::QWCommanderDevice(const QWDeviceConfiguration &configuration, QObject *parent) :
     QWDevice(configuration, parent)
 {
 }
 
-void QWCommanderDevice::parseMessage(const QString &type, const QJsonValue &content)
+void QWCommanderDevice::inspectAppliances()
 {
-    if(type != "NOTIFY") return;
+    //TODO: send a GET command to every appliance
+}
+
+void QWCommanderDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)
+{
+    if(!type.contains("NOTIFY")) return;
     if(!content.isObject()) return;
+    //TODO: reimplement it to parse a response message (content is an array of appliances)
 
     QJsonObject obj = content.toObject();
 
@@ -33,6 +42,9 @@ void QWCommanderDevice::parseMessage(const QString &type, const QJsonValue &cont
             cmds.insert(k, cmdObj.value(k).toVariant());
         }
     }
-
-    emit updateAppliances(st, cmds);
+    if(type == "NOTIFY_PUT"){
+        emit updateAppliances(st, cmds);
+        return;
+    }
+    emit setAppliances(st, cmds);
 }

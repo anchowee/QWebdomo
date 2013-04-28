@@ -27,7 +27,7 @@ void QWControlDevice::addActuator(const QWActuator &actuator)
     };
 }
 
-void QWControlDevice::parseMessage(const QString &type, const QJsonValue &content)
+void QWControlDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)
 {
     //Check if i can handle this message
     if(type != "GET" || type != "PUT") return;
@@ -69,9 +69,10 @@ void QWControlDevice::parseMessage(const QString &type, const QJsonValue &conten
     if(matches.length() > 0){
         foreach(QSharedPointer<const QWActuator> ptr, matches){
             if(type == "GET"){
-                sendMessage(roomJid(), ptr->get(st, cmds));//TODO: maybe we can send only a message to the sender
+                //if it is a GET message inform only the sender
+                sendMessage(senderJid, ptr->doGet(st, cmds));
             } else {
-                sendMessage(roomJid(), ptr->put(st, cmds));//TODO: same as above
+                sendMessage(roomJid(), ptr->doPut(st, cmds));
             }
         }
     }

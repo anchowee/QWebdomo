@@ -47,6 +47,7 @@ signals:
 
 private slots:
     void updateAppliances(const QStringList &subtypes, const QHash<QString, QVariant> &values);
+    void addAppliance(const QString &subtypes, const QHash<QString, QVariant> &values);
 
 private:
     QWCommanderDevice *_device;

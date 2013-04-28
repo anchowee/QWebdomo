@@ -43,6 +43,7 @@ QWDevice::QWDevice(const QWDeviceConfiguration &configuration, QObject *parent) 
     connectToServer(*conf);
 
     connect(this, SIGNAL(connected()), this, SLOT(startChat()));
+    connect(this, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(_parseMessage(QXmppMessage)));
 }
 
 QWDevice::~QWDevice()
@@ -79,5 +80,5 @@ void QWDevice::_parseMessage(const QXmppMessage &message)
     QJsonValue action = obj.value("action");
     QString type = action.toString();
     QJsonValue content = obj.value("content");
-    parseMessage(type, content);
+    parseMessage(message.from(), type, content);
 }

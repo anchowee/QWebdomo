@@ -19,7 +19,7 @@ public:
 signals:
 
 protected:
-    void parseMessage(const QString &type, const QJsonValue &content);
+    void parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content);
 
 private:
     QWControlDevicePrivate *d;

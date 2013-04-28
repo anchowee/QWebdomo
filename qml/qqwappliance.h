@@ -35,6 +35,7 @@ public:
     //properties
     QQmlListProperty<QWAppProperty> properties();
     void setProperties(const QHash<QString, QVariant> &properties);
+    void updateProperties(const QHash<QString, QVariant> &properties);
 
     //name
     QString name() const;

@@ -18,7 +18,7 @@
 
 QWController::QWController(QObject *parent) : QObject(parent)
 {
-    setConfiguration(new QWDeviceConfiguration);
+    setConfiguration(new QQWDeviceConfiguration);
 }
 
 QWController::~QWController()
@@ -54,6 +54,11 @@ void QWController::updateAppliances(const QStringList &subtypes, const QHash<QSt
 {
     foreach(QQWAppliance *app, _appliances){
         if(app->match(subtypes)){
+            app->updateProperties(values);
         }
     }
+}
+
+void QWController::addAppliance(const QString &subtypes, const QHash<QString, QVariant> &values)
+{
 }
