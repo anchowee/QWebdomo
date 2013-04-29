@@ -38,7 +38,7 @@ void QWController::setConfiguration(QQWDeviceConfiguration *conf)
     _device = new QWCommanderDevice(_configuration->getConfiguration(), this);
 
     connect(_device, SIGNAL(updateAppliances(QList<QQWAppliance*>)),
-            this, SLOT(updateAppliances(QList<QQWAppliance*>));
+            this, SLOT(updateAppliances(QList<QQWAppliance*>)));
 
     connect(_device, SIGNAL(setAppliances(QList<QQWAppliance*>)),
             this, SLOT(addAppliances(QList<QQWAppliance*>)));
