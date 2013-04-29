@@ -23,7 +23,7 @@ QQWDeviceConfiguration::QQWDeviceConfiguration(QObject *parent) :
 
 QQWDeviceConfiguration::SecurityMode QQWDeviceConfiguration::_streamSecurityMode() const
 {
-    return (SecurityMode)streamSecurityMode();
+    return (int)streamSecurityMode();
 }
 
 QString QQWDeviceConfiguration::userName() const
@@ -62,7 +62,7 @@ QWDeviceConfiguration QQWDeviceConfiguration::getConfiguration() const
 }
 
 
-void QQWDeviceConfiguration::_setStreamSecurityMode(QQWDeviceConfiguration::SecurityMode mode)
+void QQWDeviceConfiguration::_setStreamSecurityMode(int mode)
 {
-    setStreamSecurityMode((StreamSecurityMode)mode);
+    setStreamSecurityMode((int)mode);
 }
