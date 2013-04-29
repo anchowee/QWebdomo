@@ -25,8 +25,8 @@ class QQWDeviceConfiguration : public QObject, public QWDeviceConfiguration
 {
     Q_OBJECT
     Q_DISABLE_COPY(QQWDeviceConfiguration)
-    Q_ENUMS(StreamSecurityMode)
-    Q_PROPERTY(StreamSecurityMode streamSecurityMode READ streamSecurityMode WRITE setStreamSecurityMode)
+    Q_ENUMS(SecurityMode)
+    Q_PROPERTY(SecurityMode streamSecurityMode READ _streamSecurityMode WRITE _setStreamSecurityMode)
     Q_PROPERTY(QString userName READ userName WRITE setUserName)
     Q_PROPERTY(QString password READ password WRITE setPassword)
     Q_PROPERTY(QString domain READ domain WRITE setDomain)
@@ -34,14 +34,18 @@ class QQWDeviceConfiguration : public QObject, public QWDeviceConfiguration
     Q_PROPERTY(QString serviceName READ serviceName WRITE setServiceName)
     Q_PROPERTY(QString roomJid READ roomJid)
 public:
-    enum StreamSecurityMode{
-        TLSEnabled = 0, ///< Encryption is used if available (default)
-        TLSDisabled,    ///< No encryption is server allows
-        TLSRequired     ///< Encryption is a must otherwise connection would not
+    enum SecurityMode{
+        TLS_Enabled = TLSEnabled, ///< Encryption is used if available (default)
+        TLS_Disabled = TLSDisabled,    ///< No encryption is server allows
+        TLS_Required = TLSRequired     ///< Encryption is a must otherwise connection would not
         ///< be established
     };
 
     explicit QQWDeviceConfiguration(QObject *parent = 0);
+
+    //StreamSecurityMode
+    SecurityMode _streamSecurityMode() const;
+    void _setStreamSecurityMode(SecurityMode mode);
 
     //Username
     QString userName() const;
