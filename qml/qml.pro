@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = QWebDomoComponents
+TARGET = WebDomoComponents
 QT += qml quick
 CONFIG += qt plugin
 
