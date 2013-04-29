@@ -24,9 +24,9 @@
 class QQWDeviceConfiguration : public QObject, public QWDeviceConfiguration
 {
     Q_OBJECT
-    Q_DISABLE_COPY(QQWDeviceConfiguration)
+//    Q_DISABLE_COPY(QQWDeviceConfiguration)
     Q_ENUMS(SecurityMode)
-    Q_PROPERTY(int streamSecurityMode READ _streamSecurityMode WRITE _setStreamSecurityMode)
+    Q_PROPERTY(SecurityMode streamSecurityMode READ _streamSecurityMode WRITE _setStreamSecurityMode)
     Q_PROPERTY(QString userName READ userName WRITE setUserName)
     Q_PROPERTY(QString password READ password WRITE setPassword)
     Q_PROPERTY(QString domain READ domain WRITE setDomain)
@@ -44,8 +44,8 @@ public:
     explicit QQWDeviceConfiguration(QObject *parent = 0);
 
     //StreamSecurityMode
-    int _streamSecurityMode() const;
-    void _setStreamSecurityMode(int mode);
+    SecurityMode _streamSecurityMode() const;
+    void _setStreamSecurityMode(SecurityMode mode);
 
     //Username
     QString userName() const;
