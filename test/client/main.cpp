@@ -18,8 +18,8 @@
 
 #include <qxmpp/QXmppConfiguration.h>
 
-#include "../src/QWControlDevice.h"
-#include "../src/QWDeviceConfiguration.h"
+#include "../../src/QWControlDevice.h"
+#include "../../src/QWDeviceConfiguration.h"
 
 int main(int argc, char *argv[])
 {
