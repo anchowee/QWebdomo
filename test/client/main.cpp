@@ -18,7 +18,7 @@
 
 #include <qxmpp/QXmppConfiguration.h>
 
-#include <qwebdomo/QWDevice.h>
+#include <qwebdomo/QWControlDevice.h>
 #include <qwebdomo/QWDeviceConfiguration.h>
 
 int main(int argc, char *argv[])
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
     conf.setUser("appliance");
     conf.setPassword("123");
 
-    QWDevice dev(conf);
+    QWControlDevice dev(conf);
 
     return a.exec();
 }
