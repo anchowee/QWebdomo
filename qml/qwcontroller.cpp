@@ -18,18 +18,18 @@
 
 QWController::QWController(QObject *parent) : QObject(parent)
 {
-    setConfiguration(new QQWDeviceConfiguration);
 }
 
 QWController::~QWController()
 {
-    delete _configuration;
+    if(_configuration) delete _configuration;
 }
 
 
 QQWDeviceConfiguration *QWController::configuration() const
 {
-    return _configuration;
+    if(configuration()) return _configuration;
+    return 0;
 }
 
 void QWController::setConfiguration(QQWDeviceConfiguration *conf)
