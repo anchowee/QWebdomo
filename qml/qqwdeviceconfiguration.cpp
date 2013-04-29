@@ -21,7 +21,7 @@ QQWDeviceConfiguration::QQWDeviceConfiguration(QObject *parent) :
 {
 }
 
-QQWDeviceConfiguration::SecurityMode QQWDeviceConfiguration::_streamSecurityMode() const
+int QQWDeviceConfiguration::_streamSecurityMode() const
 {
     return (int)streamSecurityMode();
 }
@@ -64,5 +64,5 @@ QWDeviceConfiguration QQWDeviceConfiguration::getConfiguration() const
 
 void QQWDeviceConfiguration::_setStreamSecurityMode(int mode)
 {
-    setStreamSecurityMode((int)mode);
+    setStreamSecurityMode((StreamSecurityMode)mode);
 }
