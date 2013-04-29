@@ -1,6 +1,7 @@
 #ifndef QWCOMMANDERDEVICE_H
 #define QWCOMMANDERDEVICE_H
 
+#include "qqwappliance.h"
 #include "../src/QWDevice.h"
 
 #include <QJsonValue>
@@ -15,8 +16,8 @@ public slots:
     void inspectAppliances();
 
 signals:
-    void updateAppliances(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
-    void setAppliances(const QStringList &subtypes, const QHash<QString, QVariant> &commands);
+    void updateAppliances(const QList<QQWAppliance *> &appList);
+    void setAppliances(const QList<QQWAppliance *> &appList);
     
 protected:
     void parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content);

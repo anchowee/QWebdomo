@@ -40,3 +40,9 @@ void QWAppProperty::setValue(const QVariant &value)
 {
     _value = value;
 }
+
+bool QWAppProperty::operator==(const QWAppProperty &other) const
+{
+    if(_name == other.name() && _value == other.value()) return true;
+    return false;
+}

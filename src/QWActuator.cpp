@@ -52,16 +52,17 @@ QString QWActuator::formatResponse(const QString &respType, const QList<QWApplia
     QJsonArray appliancesArray;
     QList<QWAppliance*>::const_iterator it;
     for(it = appliances.constBegin(); it != appliances.constEnd(); ++it){
+        const QWAppliance* el = *it;
         QJsonObject app;
 
         QJsonObject attributes;
         QHash<QString, QVariant>::const_iterator hi;
-        for(hi = it->attributes().constBegin(); hi != it->attributes().constEnd(); ++hi){
+        for(hi = el->attributes().constBegin(); hi != el->attributes().constEnd(); ++hi){
             attributes.insert(hi.key(), QJsonValue::fromVariant(hi.value()));
         }
 
-        app.insert("name", QJsonValue(it->name()));
-        app.insert("subtypes", QJsonArray::fromStringList(it->subtypes()));
+        app.insert("name", QJsonValue(el->name()));
+        app.insert("subtypes", QJsonArray::fromStringList(el->subtypes()));
         app.insert("attributes", attributes);
         appliancesArray.append(app);
     }

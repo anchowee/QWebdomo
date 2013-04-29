@@ -40,6 +40,9 @@ void QWController::setConfiguration(QQWDeviceConfiguration *conf)
     connect(_device, SIGNAL(updateAppliances(QStringList,QHash<QString,QVariant>)),
             this, SLOT(updateAppliances(QStringList,QHash<QString,QVariant>)));
 
+    connect(_device, SIGNAL(setAppliances(QList<QQWAppliance*>)),
+            this, SLOT(addAppliances(QList<QQWAppliance*>)));
+
     emit configurationChanged();
 }
 
@@ -50,15 +53,24 @@ QQmlListProperty<QQWAppliance> QWController::appliances()
 }
 
 
-void QWController::updateAppliances(const QStringList &subtypes, const QHash<QString, QVariant> &values)
+void QWController::updateAppliances(const QList<QQWAppliance *> &appList)
 {
-    foreach(QQWAppliance *app, _appliances){
-        if(app->match(subtypes)){
-            app->updateProperties(values);
+    QList<QQWAppliance *>::iterator internalIt;
+    QList<QQWAppliance *>::const_iterator updatesIt;
+    for(internalIt = _appliances.begin(); internalIt != _appliances.end(); ++internalIt){
+        QQWAppliance *app = *internalIt;
+        for(updatesIt = appList.constBegin(); updatesIt != appList.constEnd(); ++updatesIt){
+            const QQWAppliance *changedApp = *updatesIt;
+            if(*app == *changedApp){
+                app->updateProperties(changedApp->propertiesList());
+            }
         }
     }
+    emit appliancesChanged();
 }
 
-void QWController::addAppliance(const QString &subtypes, const QHash<QString, QVariant> &values)
+void QWController::addAppliances(const QList<QQWAppliance *> &appList)
 {
+    _appliances.append(appList);
+    emit appliancesChanged();
 }

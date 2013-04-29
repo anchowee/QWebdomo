@@ -36,6 +36,8 @@ public:
     QVariant value() const;
     void setValue(const QVariant &value);
 
+    bool operator==(const QWAppProperty &other) const;
+
 signals:
     void nameChanged();
     void valueChanged();

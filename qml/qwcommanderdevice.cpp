@@ -16,35 +16,34 @@ void QWCommanderDevice::inspectAppliances()
 void QWCommanderDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)
 {
     if(!type.contains("NOTIFY")) return;
-    if(!content.isObject()) return;
-    //TODO: reimplement it to parse a response message (content is an array of appliances)
+    if(!content.isArray()) return;
 
-    QJsonObject obj = content.toObject();
+    QJsonArray arr = content.toArray();
+    QJsonArray::const_iterator it;
 
-    //Getting subtypes
-    QStringList st;
-    QJsonValue subtypes = obj.value("subtypes");
-    if(subtypes.isArray()){
-        QJsonArray stArray = subtypes.toArray();
-        for(int i=0; i< stArray.size(); i++){
-            if(stArray.at(i).isString()){
-                st.append(stArray.at(i).toString());
-            }
+    QList<QQWAppliance *> applianceList;
+    for(it = arr.constBegin(); it != arr.constEnd(); ++it){
+        QJsonObject el = QJsonValue(*it).toObject();
+        QQWAppliance *app = new QQWAppliance;
+
+        app->setName(el.value("name").toString());
+
+        QJsonArray st = el.value("subtypes").toArray();
+        for(int i = 0; i < st.size(); i++){
+            app->addSubtype(st.at(i).toString());
         }
+
+        QJsonObject cmds = el.value("commands").toObject();
+        foreach(QString key, cmds.keys()){
+            app->addProperty(key, cmds.value(key).toVariant());
+        }
+
+        applianceList.append(app);
     }
 
-    //Getting commands
-    QHash<QString, QVariant> cmds;
-    QJsonValue commands = obj.value("commands");
-    if(commands.isObject()){
-        QJsonObject cmdObj = commands.toObject();
-        foreach(QString k, cmdObj.keys()){
-            cmds.insert(k, cmdObj.value(k).toVariant());
-        }
-    }
     if(type == "NOTIFY_PUT"){
-        emit updateAppliances(st, cmds);
+        emit updateAppliances(applianceList);
         return;
     }
-    emit setAppliances(st, cmds);
+    emit setAppliances(applianceList);
 }

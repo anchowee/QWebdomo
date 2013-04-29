@@ -27,23 +27,32 @@ QQmlListProperty<QWAppProperty> QQWAppliance::properties()
     return QQmlListProperty<QWAppProperty>(this, _properties);
 }
 
-void QQWAppliance::setProperties(const QHash<QString, QVariant> &properties)
+QList<QWAppProperty *> QQWAppliance::propertiesList() const
 {
-    QHash<QString, QVariant>::const_iterator it;
-    for(it = properties.begin(); it != properties.end(); ++it){
-        QWAppProperty *prop = new QWAppProperty();
-        prop->setName(it.key());
-        prop->setValue(it.value());
-        _properties.append(prop);
-    }
+    return _properties;
+}
+
+void QQWAppliance::addProperty(const QString &name, const QVariant &value)
+{
+    QWAppProperty *prop = new QWAppProperty();
+    prop->setName(name);
+    prop->setValue(value);
+    _properties.append(prop);
     emit propertiesChanged();
 }
 
-void QQWAppliance::updateProperties(const QHash<QString, QVariant> &properties)
+void QQWAppliance::updateProperties(const QList<QWAppProperty *> &properties)
 {
-    for(int i = 0; i< _properties.length(); i++){
-        if(properties.contains(_properties.at(i)->name())){
-            _properties.at(i)->setValue(properties[_properties.at(i)->name()]);
+    QList<QWAppProperty *>::const_iterator it;
+    QList<QWAppProperty *>::iterator it2;
+    for(it = properties.constBegin(); it != properties.constEnd(); ++it){
+        const QWAppProperty *prop = *it;
+        for(it2 = _properties.begin(); it2 != _properties.end(); ++it2){
+            QWAppProperty *myProp = *it2;
+            if(prop->name() == myProp->name()){
+                myProp->setValue(prop->value());
+                continue;
+            }
         }
     }
     emit propertiesChanged();
@@ -64,19 +73,19 @@ QStringList QQWAppliance::subtypes() const
     return _subtypes;
 }
 
-void QQWAppliance::setSubtypes(const QStringList &subtypes)
+void QQWAppliance::addSubtype(const QString &subtype)
 {
-    _subtypes = subtypes;
+    _subtypes.append(subtype);
 }
 
-bool QQWAppliance::match(const QStringList &subtypes)
+bool QQWAppliance::operator==(const QQWAppliance &other) const
 {
-    for(int i = 0; i < subtypes.length(); i++){
-        bool match = false;
-        for(int j = 0; j < _subtypes.length(); j++){
-            if(subtypes[i] == _subtypes[j])
-                match = true;
-        }
-        if(!match) return false;
+    if(other.name() != this->name()) return false;
+
+    QStringList::const_iterator otherIt;
+    for(otherIt = other.subtypes().constBegin(); otherIt != other.subtypes().constEnd(); ++otherIt){
+        const QString str = *otherIt;
+        if(!_subtypes.contains(str)) return false;
     }
+    return true;
 }

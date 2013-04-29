@@ -34,8 +34,9 @@ public:
 
     //properties
     QQmlListProperty<QWAppProperty> properties();
-    void setProperties(const QHash<QString, QVariant> &properties);
-    void updateProperties(const QHash<QString, QVariant> &properties);
+    QList<QWAppProperty *> propertiesList() const;
+    void addProperty(const QString &name, const QVariant &value);
+    void updateProperties(const QList<QWAppProperty *> &properties);
 
     //name
     QString name() const;
@@ -43,9 +44,9 @@ public:
 
     //subtypes
     QStringList subtypes() const;
-    void setSubtypes(const QStringList &subtypes);
+    void addSubtype(const QString &subtype);
 
-    bool match(const QStringList &subtypes);
+    bool operator==(const QQWAppliance &other) const;
 
 signals:
     void propertiesChanged();
