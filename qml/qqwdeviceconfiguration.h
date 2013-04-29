@@ -34,6 +34,13 @@ class QQWDeviceConfiguration : public QObject, public QWDeviceConfiguration
     Q_PROPERTY(QString serviceName READ serviceName WRITE setServiceName)
     Q_PROPERTY(QString roomJid READ roomJid)
 public:
+    enum StreamSecurityMode{
+        TLSEnabled = 0, ///< Encryption is used if available (default)
+        TLSDisabled,    ///< No encryption is server allows
+        TLSRequired     ///< Encryption is a must otherwise connection would not
+        ///< be established
+    };
+
     explicit QQWDeviceConfiguration(QObject *parent = 0);
 
     //Username
