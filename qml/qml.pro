@@ -43,7 +43,7 @@ isEmpty(PREFIX) {
 
 qmldir.files = qmldir
 unix {
-    installPath = $$[QT_INSTALL_IMPORTS]/$$replace(uri, \\., /)
+    installPath = $$[QT_INSTALL_QML]/$$replace(uri, \\., /)
     qmldir.path = $$installPath
     target.path = $$installPath
     INSTALLS += target qmldir

@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QQmlListProperty>
 
+//TODO: write a function to make a get request and a put one
 class QWController : public QObject
 {
     Q_OBJECT
