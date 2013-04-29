@@ -17,77 +17,41 @@
 #include "qqwdeviceconfiguration.h"
 
 QQWDeviceConfiguration::QQWDeviceConfiguration(QObject *parent) :
-    QObject(parent)
+    QObject(parent), QWDeviceConfiguration()
 {
-    _conf = new QWDeviceConfiguration;
-}
-
-QXmppConfiguration::StreamSecurityMode QQWDeviceConfiguration::streamSecurityMode() const
-{
-    return _conf->streamSecurityMode();
-}
-
-void QQWDeviceConfiguration::setStreamSecurityMode(QXmppConfiguration::StreamSecurityMode mode)
-{
-    _conf->setStreamSecurityMode(mode);
 }
 
 QString QQWDeviceConfiguration::userName() const
 {
-    return _conf->user();
+    return user();
 }
 
 void QQWDeviceConfiguration::setUserName(const QString &name)
 {
-    _conf->setUser(name);
-}
-
-QString QQWDeviceConfiguration::password() const
-{
-    return _conf->password();
-}
-
-void QQWDeviceConfiguration::setPassword(const QString &pw)
-{
-    _conf->setPassword(pw);
-}
-
-QString QQWDeviceConfiguration::domain() const
-{
-    return _conf->domain();
-}
-
-void QQWDeviceConfiguration::setDomain(const QString &d)
-{
-    _conf->setDomain(d);
+    setUser(name);
 }
 
 QString QQWDeviceConfiguration::roomName() const
 {
-    return _conf->applianceSetRoomName();
+    return applianceSetRoomName();
 }
 
 void QQWDeviceConfiguration::setRoomName(const QString &rn)
 {
-    _conf->setApplianceSetRoomName(rn);
+    setApplianceSetRoomName(rn);
 }
 
 QString QQWDeviceConfiguration::serviceName() const
 {
-    return _conf->applianceSetServiceName();
+    return applianceSetServiceName();
 }
 
 void QQWDeviceConfiguration::setServiceName(const QString &sn)
 {
-    _conf->setApplianceSetServiceName(sn);
-}
-
-QString QQWDeviceConfiguration::roomJid() const
-{
-    return _conf->roomJid();
+    setApplianceSetServiceName(sn);
 }
 
 QWDeviceConfiguration QQWDeviceConfiguration::getConfiguration() const
 {
-    return *_conf;
+    return *(dynamic_cast<const QWDeviceConfiguration*>(this));
 }
