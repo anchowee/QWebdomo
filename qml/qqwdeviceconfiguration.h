@@ -25,6 +25,8 @@ class QQWDeviceConfiguration : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(QQWDeviceConfiguration)
+    Q_ENUMS(QWDeviceConfiguration::StreamSecurityMode)
+    Q_PROPERTY(QWDeviceConfiguration::StreamSecurityMode streamSecurityMode READ streamSecurityMode WRITE setStreamSecurityMode)
     Q_PROPERTY(QString userName READ userName WRITE setUserName)
     Q_PROPERTY(QString password READ password WRITE setPassword)
     Q_PROPERTY(QString domain READ domain WRITE setDomain)
@@ -33,6 +35,10 @@ class QQWDeviceConfiguration : public QObject
     Q_PROPERTY(QString roomJid READ roomJid)
 public:
     explicit QQWDeviceConfiguration(QObject *parent = 0);
+
+    //StreamSecurityMode
+    QWDeviceConfiguration::StreamSecurityMode streamSecurityMode() const;
+    void setStreamSecurityMode(QWDeviceConfiguration::StreamSecurityMode mode);
 
     //Username
     QString userName() const;

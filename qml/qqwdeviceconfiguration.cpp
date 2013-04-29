@@ -22,6 +22,16 @@ QQWDeviceConfiguration::QQWDeviceConfiguration(QObject *parent) :
     _conf = new QWDeviceConfiguration;
 }
 
+QXmppConfiguration::StreamSecurityMode QQWDeviceConfiguration::streamSecurityMode() const
+{
+    return _conf->streamSecurityMode();
+}
+
+void QQWDeviceConfiguration::setStreamSecurityMode(QXmppConfiguration::StreamSecurityMode mode)
+{
+    _conf->setStreamSecurityMode(mode);
+}
+
 QString QQWDeviceConfiguration::userName() const
 {
     return _conf->user();
