@@ -17,7 +17,7 @@
 #ifndef QQWDEVICECONFIGURATION_H
 #define QQWDEVICECONFIGURATION_H
 
-#include "../src/QWDeviceConfiguration.h"
+#include "QWDeviceConfiguration.h"
 
 #include <QObject>
 

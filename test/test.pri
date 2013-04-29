@@ -6,4 +6,7 @@ CONFIG   += console
 CONFIG   -= app_bundle
 
 TEMPLATE = app
-LIBS += -lqwebdomo -lqxmpp -lavahi-common -lavahi-client -lavahi-qt4
+LIBS += -lqwebdomo -lqxmpp
+
+QMAKE_LIBDIR += ../../src
+INCLUDEPATH += ../../src

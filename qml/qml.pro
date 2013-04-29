@@ -8,6 +8,9 @@ uri = Webdomo.Components
 
 LIBS += -lqwebdomo
 
+QMAKE_LIBDIR += ../src
+INCLUDEPATH += ../src
+
 # Input
 SOURCES += \
     qml_plugin.cpp \

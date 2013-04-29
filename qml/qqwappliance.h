@@ -17,7 +17,7 @@
 #ifndef QQWAPPLIANCE_H
 #define QQWAPPLIANCE_H
 
-#include "../src/QWAppliance.h"
+#include "QWAppliance.h"
 #include "qwappproperty.h"
 
 #include <QObject>

@@ -2,7 +2,7 @@
 #define QWCOMMANDERDEVICE_H
 
 #include "qqwappliance.h"
-#include "../src/QWDevice.h"
+#include "QWDevice.h"
 
 #include <QJsonValue>
 
