@@ -17,7 +17,7 @@
 #include <QCoreApplication>
 
 #include <qxmpp/QXmppLogger.h>
-#include <qwebdomo/qwserver.h>
+#include "../src/server/qwserver.h>
 
 int main(int argc, char *argv[])
 {
