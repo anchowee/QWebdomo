@@ -6,6 +6,8 @@ CONFIG += qt plugin
 TARGET = $$qtLibraryTarget($$TARGET)
 uri = Webdomo.Components
 
+LIBS += -lqwebdomo
+
 # Input
 SOURCES += \
     qml_plugin.cpp \
