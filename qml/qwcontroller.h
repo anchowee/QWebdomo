@@ -45,7 +45,7 @@ public:
 signals:
     void appliancesChanged();
     void configurationChanged();
-    void conected();
+    void connected();
 
 private slots:
     void updateAppliances(const QList<QQWAppliance *> &appList);
