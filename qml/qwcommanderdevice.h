@@ -13,7 +13,7 @@ public:
     explicit QWCommanderDevice(const QWDeviceConfiguration &configuration, QObject *parent = 0);
 
 public slots:
-    void inspectAppliances();
+    void getAll();
 
 signals:
     void updateAppliances(const QList<QQWAppliance *> &appList);

@@ -38,9 +38,6 @@ public:
 
     QString roomJid() const;
 
-//public slots:
-//    void sendMessage(const QString &bareJid, const QString &message);
-
 protected:
     virtual void parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content) = 0;
 

@@ -43,6 +43,8 @@ void QWController::setConfiguration(QQWDeviceConfiguration *conf)
     connect(_device, SIGNAL(setAppliances(QList<QQWAppliance*>)),
             this, SLOT(addAppliances(QList<QQWAppliance*>)));
 
+    connect(_device, SIGNAL(connected()), this, SIGNAL(connected()));
+
     emit configurationChanged();
 }
 

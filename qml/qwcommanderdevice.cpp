@@ -2,15 +2,23 @@
 
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QJsonDocument>
 
 QWCommanderDevice::QWCommanderDevice(const QWDeviceConfiguration &configuration, QObject *parent) :
     QWDevice(configuration, parent)
 {
+    connect(this, SIGNAL(connected()), this, SLOT(getAll()));
 }
 
-void QWCommanderDevice::inspectAppliances()
+void QWCommanderDevice::getAll()
 {
-    //TODO: send a GET command to every appliance
+    QJsonObject content;
+    content.insert("subtypes", QJsonArray());
+    QJsonObject messageContent;
+    messageContent.insert("action", QJsonValue(QString("GET")));
+    messageContent.insert("content", content);
+    QJsonDocument doc(messageContent);
+    sendMessage(roomJid(), QString(doc.toJson()));
 }
 
 void QWCommanderDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)
