@@ -72,7 +72,7 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
                 //if it is a GET message inform only the sender
                 sendMessage(senderJid, ptr->doGet(st, cmds));
             } else {
-                sendMessage(roomJid(), ptr->doPut(st, cmds));
+                emit sendRoomMessage(ptr->doPut(st, cmds));
             }
         }
     }

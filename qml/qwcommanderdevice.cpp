@@ -18,7 +18,7 @@ void QWCommanderDevice::getAll()
     messageContent.insert("action", QJsonValue(QString("GET")));
     messageContent.insert("content", content);
     QJsonDocument doc(messageContent);
-    sendMessage(roomJid(), QString(doc.toJson()));
+    emit sendRoomMessage(QString(doc.toJson()));
 }
 
 void QWCommanderDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)
