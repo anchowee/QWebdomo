@@ -3,10 +3,11 @@
 #include <QSharedPointer>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QMultiHash>
 
 class QWControlDevicePrivate {
 public:
-    QHash<QString, QSharedPointer<QWActuator> > actuators;
+    QMultiHash<QString, QSharedPointer<QWActuator> > actuators;
 };
 
 QWControlDevice::QWControlDevice(const QWDeviceConfiguration &configuration, QObject *parent) :
@@ -21,8 +22,10 @@ QWControlDevice::~QWControlDevice()
 
 void QWControlDevice::addActuator(QWActuator &actuator)
 {
-    QStringList subtypes = actuator.getSubtypes();
-    foreach (QString st, subtypes) {
+    const QStringList subtypes = actuator.getSubtypes();
+    QStringList::const_iterator it;
+    for(it = subtypes.constBegin(); it != subtypes.constEnd(); ++it) {
+        const QString st = *it;
         d->actuators.insert(st, QSharedPointer<QWActuator>(&actuator));
     };
 }
@@ -37,7 +40,7 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
 
     //Getting subtypes
     QStringList st;
-    QJsonValue subtypes = obj.value("subtypes");
+    const QJsonValue subtypes = obj.value("subtypes");
     if(subtypes.isArray()){
         QJsonArray stArray = subtypes.toArray();
         for(int i=0; i< stArray.size(); i++){
@@ -63,6 +66,16 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
         foreach(QSharedPointer<QWActuator> ptr, d->actuators.values(st[i])){
             if(!matches.contains(ptr)){
                 matches.removeAll(ptr);
+            }
+        }
+    }
+    if(st.length() == 0){
+        const QList<QSharedPointer<QWActuator> > allMatches = d->actuators.values();
+        QList<QSharedPointer<QWActuator> >::const_iterator it;
+        for(it = allMatches.constBegin(); it != allMatches.constEnd(); ++it){
+            QSharedPointer<QWActuator> ptr = *it;
+            if(!matches.contains(ptr)){
+                matches.append(ptr);
             }
         }
     }
