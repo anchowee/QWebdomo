@@ -30,21 +30,29 @@ public:
 
     QStringList getSubtypes() const;
 
-    virtual QList<QWAppliance*> put(QStringList &subtypes, QHash<QString, QVariant> &attributes) = 0;
-    virtual QList<QWAppliance*> get(QStringList &subtypes, QHash<QString, QVariant> &attributes) = 0;
+    virtual QList<QWAppliance> put(QStringList &subtypes, QHash<QString, QVariant> &attributes) = 0;
+    virtual QList<QWAppliance> get(QStringList &subtypes, QHash<QString, QVariant> &attributes) = 0;
 
     QString doGet(QStringList &subtypes, QHash<QString, QVariant> &attributes);
     QString doPut(QStringList &subtypes, QHash<QString, QVariant> &attributes);
 
 signals:
     void appliancesChanged();
+
+public slots:
+    void addAppliance(const QWAppliance &app);
+
+protected:
+    QList<QWAppliance> find(QStringList &subtypes);
     
 private:
-    QString formatResponse(const QString &respType, const QList<QWAppliance*> &appliances) const;
+    QString formatResponse(const QString &respType, const QList<QWAppliance> &appliances) const;
 
 private:
     QList<QWAppliance> *_appliances;
 
 };
+
+Q_DECLARE_INTERFACE(QWActuator, "Webdomo.Plugin.QWActuator/1.0")
 
 #endif // QWACTUATOR_H

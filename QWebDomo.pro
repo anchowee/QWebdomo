@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS += src test
+SUBDIRS += src test actuators
 
 QWEBDOMO_INCLUDEPATH = $$PWD/src $$PWD/src/server
 

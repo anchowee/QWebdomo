@@ -36,6 +36,7 @@ public:
     void setName(const QString &name);
     QString name() const;
 
+    //subtypes are sorted
     void setSubtypes(const QStringList &subtypes);
     QStringList subtypes() const;
     void addSubtype(const QString &subtype);
@@ -44,6 +45,11 @@ public:
     QHash<QString, QVariant> attributes() const;
     void setAttribute(const QString &name, const QVariant &value);
     QVariant getAttribute(const QString &name) const;
+
+    static int binFindPosition(int x, int z, const QStringList &array, const QString &string);
+
+    QWAppliance &operator=(const QWAppliance &rhs);
+    bool operator==(const QWAppliance &other);
 
 private:
     QSharedDataPointer<QWAppliancePrivate> d;

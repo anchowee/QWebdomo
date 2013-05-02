@@ -21,9 +21,14 @@ public:
     QWAppliancePrivate(){}
 
     QWAppliancePrivate(const QWAppliancePrivate &other) :
-        QSharedData(other) {}
+        QSharedData(other),
+        name(other.name),
+        subtypes(other.subtypes),
+        attributes(other.attributes) {}
 
     QString name;
+
+    //ordered list of string
     QStringList subtypes;
 
     QHash<QString, QVariant> attributes;
@@ -57,6 +62,7 @@ QString QWAppliance::name() const
 void QWAppliance::setSubtypes(const QStringList &subtypes)
 {
     d->subtypes = subtypes;
+    d->subtypes.sort();
 }
 
 QStringList QWAppliance::subtypes() const
@@ -66,7 +72,8 @@ QStringList QWAppliance::subtypes() const
 
 void QWAppliance::addSubtype(const QString &subtype)
 {
-    d->subtypes.push_back(subtype);
+    int pos = QWAppliance::binFindPosition(0, d->subtypes.length(), d->subtypes, subtype);
+    d->subtypes.insert(pos, subtype);
 }
 
 void QWAppliance::setAttributes(const QHash<QString, QVariant> &attributes)
@@ -87,4 +94,30 @@ void QWAppliance::setAttribute(const QString &name, const QVariant &value)
 QVariant QWAppliance::getAttribute(const QString &name) const
 {
     return d->attributes.value(name);
+}
+
+int QWAppliance::binFindPosition(int x, int z, const QStringList &array, const QString &string)
+{
+    if(x<z){
+        int y = x+z/2;
+        if(array.at(y) < string){
+            return QWAppliance::binFindPosition(x, y-1, array, string);
+        } else {
+            return QWAppliance::binFindPosition(y+1, z, array, string);
+        }
+    }
+    return x;
+}
+
+QWAppliance &QWAppliance::operator =(const QWAppliance &rhs)
+{
+    if(this == &rhs) return *this;
+    d = rhs.d;
+    return *this;
+}
+
+bool QWAppliance::operator ==(const QWAppliance &other)
+{
+    if(other.subtypes() == subtypes() && other.name() == name()) return true;
+    return false;
 }
