@@ -1,6 +1,6 @@
 include(../test.pri)
 
-TARGET = server_test
+TARGET = plugin_test
 
 SOURCES += \
     main.cpp

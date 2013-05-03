@@ -1,7 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    client
+    client \
+    plugin
 
 !isEmpty(QWD_USE_SERVER){
     SUBDIRS += server_example

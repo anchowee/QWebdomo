@@ -1,6 +1,6 @@
 include(../test.pri)
 
-TARGET = client
+TARGET = client_test
 
 SOURCES += \
     main.cpp
