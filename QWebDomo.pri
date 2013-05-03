@@ -10,4 +10,6 @@ isEmpty(LIBDIR) {
     LIBDIR = lib
 }
 
-DEFINES += "PLUGINS_PATH=\\\"$${PREFIX}/share/webdomo/plugins\\\""
+#Plugins directory
+PLUGINS_PATH = $$PREFIX/share/webdomo/plugins
+DEFINES += "PLUGINS_PATH=\\\"$${PLUGINS_PATH}\\\""
