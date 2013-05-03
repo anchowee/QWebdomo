@@ -3,7 +3,7 @@ CONFIG         += plugin
 INCLUDEPATH    += ../../src
 LIBS += -lqwebdomo
 
-TARGET = $$qtLibraryTarget(qwebdomo)
+TARGET = $$qtLibraryTarget(fake)
 
 HEADERS += \
     QWFakeActuator.h
