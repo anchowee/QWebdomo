@@ -14,7 +14,7 @@ SOURCES += \
 include(../../QWebDomo.pri)
 
 unix{
-target.path = $$PREFIX/share/webdomo/plugins
+target.path = $$PLUGINS_PATH
 }else{
 #TODO: add target path
 }

@@ -15,8 +15,15 @@
  */
 
 #include <QCoreApplication>
+#include <QDebug>
+#include <QDir>
+#include <QPluginLoader>
 
 int main(int argc, char *argv[])
 {
-    //TODO: scan for plugins, and test the fake plugin
+    QDir pluginsDir(PLUGINS_PATH);
+    foreach(QString filename, pluginsDir.entryList(QDir::Files)){
+        QPluginLoader loader(pluginsDir.absoluteFilePath(filename));
+        qDebug() << "name: " <<loader.objectName();
+    }
 }

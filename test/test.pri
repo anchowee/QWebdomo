@@ -10,3 +10,5 @@ LIBS += -lqwebdomo -lqxmpp
 
 QMAKE_LIBDIR += ../../src
 INCLUDEPATH += ../../src
+
+include(../QWebDomo.pri)
