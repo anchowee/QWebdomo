@@ -32,21 +32,6 @@ LIBS += -lqxmpp
     include(server/server.pri)
 }
 
-!isEmpty(QML_PLUGINS){
-    include(qml/qml.pro)
-}
-
-# Installation prefix and library directory
-isEmpty(PREFIX) {
-    unix {
-        PREFIX = /usr
-    } else {
-        PREFIX = $$[QT_INSTALL_PREFIX]
-    }
-}
-isEmpty(LIBDIR) {
-    LIBDIR = lib
-}
 
 #installation
 headers.files = $$HEADERS

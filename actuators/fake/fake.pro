@@ -10,3 +10,11 @@ HEADERS += \
 
 SOURCES += \
     QWFakeActuator.cpp
+
+unix{
+target.path = $$PREFIX/share/webdomo/plugins
+}else{
+#TODO: add target path
+}
+
+INSTALLS += target
