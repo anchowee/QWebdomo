@@ -11,6 +11,8 @@ HEADERS += \
 SOURCES += \
     QWFakeActuator.cpp
 
+include(../../QWebDomo.pri)
+
 unix{
 target.path = $$PREFIX/share/webdomo/plugins
 }else{

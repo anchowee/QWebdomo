@@ -30,13 +30,7 @@ HEADERS += \
 
 OTHER_FILES = qmldir
 
-isEmpty(PREFIX) {
-    unix {
-        PREFIX = /usr
-    } else {
-        PREFIX = $$[QT_INSTALL_PREFIX]
-    }
-}
+include(../QWebDomo.pri)
 
 !equals(_PRO_FILE_PWD_, $$OUT_PWD) {
     copy_qmldir.target = $$OUT_PWD/qmldir

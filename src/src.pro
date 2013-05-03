@@ -34,6 +34,9 @@ LIBS += -lqxmpp
 
 
 #installation
+
+include(../QWebDomo.pri)
+
 headers.files = $$HEADERS
 headers.path = $$PREFIX/include/qwebdomo
 target.path = $$PREFIX/$$LIBDIR
