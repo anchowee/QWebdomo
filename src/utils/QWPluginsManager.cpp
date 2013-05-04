@@ -11,18 +11,7 @@ public:
     }
 
     QDir pluginsDir;
-    QList<QPluginLoader*> plugins;
 };
-
-
-QWPluginDescriptor::QWPluginDescriptor(const QString &name, QObject *instance)
-    :className(name), instance(instance) {}
-
-bool QWPluginDescriptor::isNull() const
-{
-    if(className == "" && instance == 0) return true;
-    return false;
-}
 
 QWPluginsManager::QWPluginsManager() :
     d(new QWPluginsManagerPrivate)
@@ -34,7 +23,7 @@ QWPluginsManager::~QWPluginsManager()
     delete d;
 }
 
-QWPluginDescriptor QWPluginsManager::loadActuator(const QString &protocolName, int minVersion, const QString &protocolVariant)
+QWActuator* QWPluginsManager::loadActuator(const QString &protocolName, int minVersion, const QString &protocolVariant)
 {
     foreach(QString filename, d->pluginsDir.entryList(QDir::Files)){
         QPluginLoader *loader = new QPluginLoader(d->pluginsDir.absoluteFilePath(filename));
@@ -45,10 +34,10 @@ QWPluginDescriptor QWPluginsManager::loadActuator(const QString &protocolName, i
             if(protocol.value("name").toString() == protocolName
                     && pluginVersion > minVersion
                     && protocol.value("variant").toString() == protocolVariant){
-                 return QWPluginDescriptor(loader->metaData().value("className").toString(), loader->instance());
+                return qobject_cast<QWActuator*>(loader->instance());
             }
         }
     }
-    return QWPluginDescriptor();
+    return 0;
  }
 
