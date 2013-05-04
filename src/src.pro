@@ -4,10 +4,13 @@
 #
 #-------------------------------------------------
 
+include(../QWebDomo.pri)
+
 QT       -= gui
 QT += network
 
 TARGET = qwebdomo
+VERSION = $${QW_VERSION}
 TEMPLATE = lib
 
 DEFINES += SRC_LIBRARY
@@ -36,8 +39,6 @@ LIBS += -lqxmpp
 
 
 #installation
-
-include(../QWebDomo.pri)
 
 headers.files = $$HEADERS
 headers.path = $$PREFIX/include/qwebdomo

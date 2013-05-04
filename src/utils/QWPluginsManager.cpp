@@ -4,29 +4,11 @@
 #include <QJsonObject>
 #include <QDir>
 
-class QWPluginsManagerPrivate {
-public:
-    QWPluginsManagerPrivate(){
-        pluginsDir = QDir(PLUGINS_PATH);
-    }
-
-    QDir pluginsDir;
-};
-
-QWPluginsManager::QWPluginsManager() :
-    d(new QWPluginsManagerPrivate)
-{
-}
-
-QWPluginsManager::~QWPluginsManager()
-{
-    delete d;
-}
-
 QWActuator* QWPluginsManager::loadActuator(const QString &protocolName, int minVersion, const QString &protocolVariant)
 {
-    foreach(QString filename, d->pluginsDir.entryList(QDir::Files)){
-        QPluginLoader *loader = new QPluginLoader(d->pluginsDir.absoluteFilePath(filename));
+    QDir pluginsDir(PLUGINS_PATH);
+    foreach(QString filename, pluginsDir.entryList(QDir::Files)){
+        QPluginLoader *loader = new QPluginLoader(pluginsDir.absoluteFilePath(filename));
         QJsonObject metadata = loader->metaData().value("MetaData").toObject();
         QJsonObject protocol = metadata.value("protocol").toObject();
         int pluginVersion = metadata.value("version").toString().toInt();

@@ -25,10 +25,10 @@
 void QmlPlugin::registerTypes(const char *uri)
 {
     // @uri Webdomo.Components
-    qmlRegisterType<QWController>(uri, 0, 1, "Controller");
-    qmlRegisterType<QQWDeviceConfiguration>(uri, 0, 1, "DeviceConfiguration");
-    qmlRegisterType<QQWAppliance>(uri, 0, 1, "Appliance");
-    qmlRegisterType<QWAppProperty>(uri, 0, 1, "ApplianceProperty");
+    qmlRegisterType<QWController>(uri, QW_VERSION_MAJOR, QW_VERSION_MINOR, "Controller");
+    qmlRegisterType<QQWDeviceConfiguration>(uri, QW_VERSION_MAJOR, QW_VERSION_MINOR, "DeviceConfiguration");
+    qmlRegisterType<QQWAppliance>(uri, QW_VERSION_MAJOR, QW_VERSION_MINOR, "Appliance");
+    qmlRegisterType<QWAppProperty>(uri, QW_VERSION_MAJOR, QW_VERSION_MINOR, "ApplianceProperty");
 }
 
 

@@ -14,22 +14,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "QWActuator.h"
+#include "utils/QWPluginsManager.h"
+
 #include <QCoreApplication>
 #include <QDebug>
-#include <QDir>
-#include <QPluginLoader>
-#include <QJsonObject>
 
 int main(int argc, char *argv[])
 {
-    QDir pluginsDir(PLUGINS_PATH);
-    foreach(QString filename, pluginsDir.entryList(QDir::Files)){
-        QPluginLoader loader(pluginsDir.absoluteFilePath(filename));
-        QJsonObject metadata = loader.metaData().value("MetaData").toObject();
-        QJsonObject protocol = metadata.value("protocol").toObject();
-        if(!protocol.isEmpty()){
-            if(protocol.value("name").toString() == "fake")
-                qDebug() << "protocol fake, version: " << metadata.value("version").toString();
-        }
-    }
+    QWActuator *actuator = QWPluginsManager::loadActuator("fake");
+    qDebug() << actuator->objectName();
 }

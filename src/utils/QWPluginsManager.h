@@ -7,18 +7,10 @@
 #include <QObject>
 #include <QString>
 
-class QWPluginsManagerPrivate;
-
 class QWEBDOMOSHARED_EXPORT QWPluginsManager
 {
 public:
-    QWPluginsManager();
-    ~QWPluginsManager();
-
-    QObject* loadActuator(const QString &protocolName, int minVersion = 0.0, const QString &protocolVariant = "");
-
-private:
-    QWPluginsManagerPrivate *d;
+    static QWActuator *loadActuator(const QString &protocolName, int minVersion = 0.0, const QString &protocolVariant = "");
 };
 
 #endif // QWPLUGINSMANAGER_H
