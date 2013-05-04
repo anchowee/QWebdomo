@@ -18,12 +18,18 @@
 #include <QDebug>
 #include <QDir>
 #include <QPluginLoader>
+#include <QJsonObject>
 
 int main(int argc, char *argv[])
 {
     QDir pluginsDir(PLUGINS_PATH);
     foreach(QString filename, pluginsDir.entryList(QDir::Files)){
         QPluginLoader loader(pluginsDir.absoluteFilePath(filename));
-        qDebug() << "name: " <<loader.objectName();
+        QJsonObject metadata = loader.metaData();
+        QJsonObject protocol = metadata.value("protocol").toObject();
+        if(protocol){
+            if(protocol.value("name").toString() == "fake")
+                qDebug() << "protocol fake, version: " << protocol.value("version").toString();
+        }
     }
 }
