@@ -23,5 +23,15 @@
 int main(int argc, char *argv[])
 {
     QWActuator *actuator = QWPluginsManager::loadActuator("fake");
-    qDebug() << actuator->objectName();
+    if(actuator == 0){
+        qDebug() << "actuator not found";
+        return 1;
+    }
+    QWAppliance app;
+    app.setName("prova");
+    app.addSubtype("home");
+    app.addSubtype("example");
+    app.setAttribute("value", QVariant(0));
+    actuator->addAppliance(app);
+    qDebug() << "done";
 }
