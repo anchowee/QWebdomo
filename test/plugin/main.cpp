@@ -25,11 +25,11 @@ int main(int argc, char *argv[])
     QDir pluginsDir(PLUGINS_PATH);
     foreach(QString filename, pluginsDir.entryList(QDir::Files)){
         QPluginLoader loader(pluginsDir.absoluteFilePath(filename));
-        QJsonObject metadata = loader.metaData();
+        QJsonObject metadata = loader.metaData().value("MetaData").toObject();
         QJsonObject protocol = metadata.value("protocol").toObject();
         if(!protocol.isEmpty()){
             if(protocol.value("name").toString() == "fake")
-                qDebug() << "protocol fake, version: " << protocol.value("version").toString();
+                qDebug() << "protocol fake, version: " << metadata.value("version").toString();
         }
     }
 }
