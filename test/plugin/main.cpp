@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
         QPluginLoader loader(pluginsDir.absoluteFilePath(filename));
         QJsonObject metadata = loader.metaData();
         QJsonObject protocol = metadata.value("protocol").toObject();
-        if(protocol){
+        if(!protocol.isEmpty()){
             if(protocol.value("name").toString() == "fake")
                 qDebug() << "protocol fake, version: " << protocol.value("version").toString();
         }
