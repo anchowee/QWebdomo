@@ -3,7 +3,7 @@
 #include <QPluginLoader>
 #include <QJsonObject>
 #include <QDir>
-#ifdef Q_DEBUG
+#ifdef QT_DEBUG
 #include <QDebug>
 #endif
 
@@ -15,8 +15,8 @@ QWActuator* QWPluginsManager::loadActuator(const QString &protocolName, int minV
         QJsonObject metadata = loader->metaData().value("MetaData").toObject();
         QJsonObject protocol = metadata.value("protocol").toObject();
         int pluginVersion = metadata.value("version").toString().toInt();
-#ifdef Q_DEBUG
-        qDebug() << "## new Protocol ##"
+#ifdef QT_DEBUG
+        qDebug() << "## new Protocol ##";
         qDebug() << "name: " << protocol.value("name").toString();
         qDebug() << "version: " << pluginVersion;
         qDebug() << "variant: " << protocol.value("variant").toString();
