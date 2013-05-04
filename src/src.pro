@@ -25,6 +25,8 @@ HEADERS += $$PWD/QWDevice.h \
     $$PWD/QWAppliance.h \
     $$PWD/QWControlDevice.h
 
+include(utils/utils.pri)
+
 LIBS += -lqxmpp
 
 !isEmpty(QWD_USE_SERVER){
