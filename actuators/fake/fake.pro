@@ -16,3 +16,6 @@ include(../../QWebDomo.pri)
 target.path = $${PLUGINS_PATH}
 
 INSTALLS += target
+
+OTHER_FILES += \
+    fakeActuator.json
