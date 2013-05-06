@@ -33,5 +33,8 @@ int main(int argc, char *argv[])
     app.addSubtype("example");
     app.setAttribute("value", QVariant(0));
     actuator->addAppliance(app);
+    QStringList sl;
+    QHash<QString, QVariant> qh;
+    qDebug() << actuator->doGet(sl,qh);
     qDebug() << "done";
 }

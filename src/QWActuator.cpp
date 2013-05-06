@@ -63,6 +63,9 @@ QString QWActuator::formatResponse(const QString &respType, const QList<QWApplia
 {
     // it returns an object like:
     // { action:"NOTIFY_GET", content:[{name: "example", subtypes: [], attributes:{k:v}}]}
+#ifdef QT_DEBUG
+    qDebug() << "formatting response";
+#endif
     QJsonArray appliancesArray;
     QList<QWAppliance>::const_iterator it;
     for(it = appliances.constBegin(); it != appliances.constEnd(); ++it){
