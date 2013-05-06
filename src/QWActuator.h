@@ -27,6 +27,7 @@ class QWActuator : public QObject
     Q_OBJECT
 public:
     explicit QWActuator(QObject *parent = 0);
+    ~QWActuator();
 
     QStringList getSubtypes() const;
 

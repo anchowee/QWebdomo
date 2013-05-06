@@ -31,6 +31,12 @@ QWActuator::QWActuator(QObject *parent) :
 #ifdef QT_DEBUG
     qDebug() << "Creating new actuator";
 #endif
+    _appliances = new QList<QWAppliance>();
+}
+
+QWActuator::~QWActuator()
+{
+    delete _appliances;
 }
 
 QStringList QWActuator::getSubtypes() const
@@ -84,10 +90,10 @@ QString QWActuator::formatResponse(const QString &respType, const QList<QWApplia
 
 void QWActuator::addAppliance(const QWAppliance &app)
 {
+    if(!_appliances->contains(app))
 #ifdef QT_DEBUG
     qDebug() << "adding appliance";
 #endif
-    if(!_appliances->contains(app))
         _appliances->append(app);
 }
 
