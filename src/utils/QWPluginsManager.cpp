@@ -14,7 +14,7 @@ QWActuator* QWPluginsManager::loadActuator(const QString &protocolName, int minV
         QPluginLoader *loader = new QPluginLoader(pluginsDir.absoluteFilePath(filename));
         QJsonObject metadata = loader->metaData().value("MetaData").toObject();
         QJsonObject protocol = metadata.value("protocol").toObject();
-        int pluginVersion = metadata.value("version").toString().toInt();
+        double pluginVersion = metadata.value("version").toString().toDouble();
 #ifdef QT_DEBUG
         qDebug() << "## new Protocol ##";
         qDebug() << "name: " << protocol.value("name").toString();
@@ -23,7 +23,7 @@ QWActuator* QWPluginsManager::loadActuator(const QString &protocolName, int minV
 #endif
         if(!protocol.isEmpty()){
             if(protocol.value("name").toString() == protocolName
-                    && pluginVersion > minVersion
+                    && pluginVersion >= minVersion
                     && protocol.value("variant").toString() == protocolVariant){
                 return qobject_cast<QWActuator*>(loader->instance());
             }
