@@ -21,9 +21,17 @@
 #include <QJsonArray>
 #include <QJsonValue>
 
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
+
 QWActuator::QWActuator(QObject *parent) :
     QObject(parent)
-{}
+{
+#ifdef QT_DEBUG
+    qDebug() << "Creating new actuator";
+#endif
+}
 
 QStringList QWActuator::getSubtypes() const
 {
@@ -76,6 +84,9 @@ QString QWActuator::formatResponse(const QString &respType, const QList<QWApplia
 
 void QWActuator::addAppliance(const QWAppliance &app)
 {
+#ifdef QT_DEBUG
+    qDebug() << "adding appliance";
+#endif
     if(!_appliances->contains(app))
         _appliances->append(app);
 }
