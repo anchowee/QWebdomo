@@ -102,6 +102,13 @@ void QWActuator::addAppliance(const QWAppliance &app)
 
 QList<QWAppliance> QWActuator::find(QStringList &subtypes)
 {
+    //TODO: this function causes segfault due to array issues
+#ifdef QT_DEBUG
+    qDebug() << "Finding; subtypes length: " << subtypes.length();
+    for(int i = 0; i < subtypes.length(); ++i){
+        qDebug() << subtypes.at(i);
+    }
+#endif
     QList<QWAppliance> results;
     results.append(*_appliances);
     subtypes.sort();
