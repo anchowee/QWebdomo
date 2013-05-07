@@ -110,6 +110,8 @@ QList<QWAppliance> QWActuator::find(QStringList &subtypes)
     }
 #endif
     QList<QWAppliance> results;
+    if(subtypes.length() == 0) return results;
+
     results.append(*_appliances);
     subtypes.sort();
     QList<QWAppliance>::const_iterator it;
