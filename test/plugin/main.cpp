@@ -44,7 +44,8 @@ int main(int argc, char *argv[])
     QHash<QString, QVariant> qh;
     qDebug() << "-- doGet empty test";
     qDebug() << actuator->doGet(sl,qh);
-    sl.append("example");
+    sl.append("home");
+    sl.append("aab");
     qDebug() << "-- doGet with home subtype";
     qDebug() << actuator->doGet(sl, qh);
     qDebug() << "done";
