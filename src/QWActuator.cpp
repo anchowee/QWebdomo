@@ -120,7 +120,7 @@ QList<QWAppliance> QWActuator::find(QStringList &subtypes)
         int y = app.subtypes().indexOf(subtypes.at(subtypes.length()-1));
         if(y-x == subtypes.length()-1){
             for(int i = 0; i < subtypes.length(); i++){
-                if(app.subtypes().at(i) != subtypes.at(i)) results.removeAll(app);
+                if(app.subtypes().at(x+i) != subtypes.at(i)) results.removeAll(app);
             }
         } else {
             results.removeAll(app);
