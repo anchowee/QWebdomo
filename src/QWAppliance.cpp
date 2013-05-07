@@ -72,7 +72,7 @@ QStringList QWAppliance::subtypes() const
 
 void QWAppliance::addSubtype(const QString &subtype)
 {
-    QStringList::iterator pos = qLowerBound(d->subtypes, subtype);
+    QStringList::iterator pos = qLowerBound(d->subtypes.begin(), d->subtypes.end(), subtype);
     d->subtypes.insert(pos, subtype);
 }
 
