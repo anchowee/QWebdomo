@@ -106,7 +106,7 @@ int QWAppliance::binFindPosition(int x, int z, const QStringList &array, const Q
             return QWAppliance::binFindPosition(y+1, z, array, string);
         }
     }
-    while(array.at(x) < string && x < string.length()-1)
+    while(array.at(x) < string && x < array.length()-1)
         x++;
     return x;
 }

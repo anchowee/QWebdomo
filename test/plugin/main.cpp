@@ -31,13 +31,20 @@ int main(int argc, char *argv[])
     app.setName("prova");
     app.addSubtype("home");
     app.addSubtype("example");
+    app.addSubtype("aaa");
+    app.addSubtype("aab");
+    app.addSubtype("zero");
+    app.addSubtype("cracker");
     app.setAttribute("value", QVariant(0));
+    for(int i = 0; i < app.subtypes().length(); i++){
+        qDebug() << app.subtypes().at(i);
+    }
     actuator->addAppliance(app);
     QStringList sl;
     QHash<QString, QVariant> qh;
     qDebug() << "-- doGet empty test";
     qDebug() << actuator->doGet(sl,qh);
-    sl.append("home");
+    sl.append("example");
     qDebug() << "-- doGet with home subtype";
     qDebug() << actuator->doGet(sl, qh);
     qDebug() << "done";
