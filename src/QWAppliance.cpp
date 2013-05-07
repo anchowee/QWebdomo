@@ -72,7 +72,7 @@ QStringList QWAppliance::subtypes() const
 
 void QWAppliance::addSubtype(const QString &subtype)
 {
-    int pos = QWAppliance::binFindPosition(0, d->subtypes.length()-1, d->subtypes, subtype);
+    QStringList::iterator pos = qLowerBound(d->subtypes, subtype);
     d->subtypes.insert(pos, subtype);
 }
 
@@ -94,21 +94,6 @@ void QWAppliance::setAttribute(const QString &name, const QVariant &value)
 QVariant QWAppliance::getAttribute(const QString &name) const
 {
     return d->attributes.value(name);
-}
-
-int QWAppliance::binFindPosition(int x, int z, const QStringList &array, const QString &string)
-{
-    if(x<z){
-        int y = x+z/2;
-        if(array.at(y) < string){
-            return QWAppliance::binFindPosition(x, y-1, array, string);
-        } else {
-            return QWAppliance::binFindPosition(y+1, z, array, string);
-        }
-    }
-    while(x < array.length()-1 && array.at(x) < string)
-        x++;
-    return x;
 }
 
 QWAppliance &QWAppliance::operator =(const QWAppliance &rhs)
