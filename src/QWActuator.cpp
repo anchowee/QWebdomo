@@ -118,8 +118,8 @@ QList<QWAppliance> QWActuator::find(QStringList &subtypes)
     for(it = _appliances->constBegin(); it != _appliances->constEnd(); ++it){
         const QWAppliance app = *it;
         int x = app.subtypes().indexOf(subtypes.at(0));
-        int y = app.subtypes().indexOf(subtypes.at(subtypes.length()));
-        if(y-x+1 == subtypes.length()){
+        int y = app.subtypes().indexOf(subtypes.at(subtypes.length()-1));
+        if(y-x == subtypes.length()-1){
             for(int i = 0; i < subtypes.length(); i++){
                 if(app.subtypes().at(i) != subtypes.at(i)) results.removeAll(app);
             }

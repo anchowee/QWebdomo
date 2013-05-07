@@ -35,6 +35,10 @@ int main(int argc, char *argv[])
     actuator->addAppliance(app);
     QStringList sl;
     QHash<QString, QVariant> qh;
+    qDebug() << "-- doGet empty test";
     qDebug() << actuator->doGet(sl,qh);
+    sl.append("home");
+    qDebug() << "-- doGet with home subtype";
+    qDebug() << actuator->doGet(sl, qh);
     qDebug() << "done";
 }
