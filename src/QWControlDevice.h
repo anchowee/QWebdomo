@@ -14,7 +14,7 @@ public:
     explicit QWControlDevice(const QWDeviceConfiguration &configuration, QObject *parent = 0);
     ~QWControlDevice();
 
-    void addActuator(QWActuator &actuator);
+    void addActuator(QWActuator *actuator);
     
 signals:
 

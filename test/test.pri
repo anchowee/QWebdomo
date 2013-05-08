@@ -1,6 +1,6 @@
-QT       += core network
+include(../QWebDomo.pri)
 
-QT       -= gui
+QT       += core network
 
 CONFIG   += console
 CONFIG   -= app_bundle
@@ -10,5 +10,3 @@ LIBS += -lqwebdomo -lqxmpp
 
 QMAKE_LIBDIR += ../../src
 INCLUDEPATH += ../../src
-
-include(../QWebDomo.pri)

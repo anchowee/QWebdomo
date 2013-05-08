@@ -6,7 +6,6 @@
 
 include(../QWebDomo.pri)
 
-QT       -= gui
 QT += network
 
 TARGET = qwebdomo

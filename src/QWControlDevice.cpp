@@ -7,7 +7,7 @@
 
 class QWControlDevicePrivate {
 public:
-    QMultiHash<QString, QSharedPointer<QWActuator> > actuators;
+    QMultiHash<QString, QWActuator *> actuators;
 };
 
 QWControlDevice::QWControlDevice(const QWDeviceConfiguration &configuration, QObject *parent) :
@@ -20,13 +20,13 @@ QWControlDevice::~QWControlDevice()
     delete d;
 }
 
-void QWControlDevice::addActuator(QWActuator &actuator)
+void QWControlDevice::addActuator(QWActuator *actuator)
 {
-    const QStringList subtypes = actuator.getSubtypes();
+    const QStringList subtypes = actuator->getSubtypes();
     QStringList::const_iterator it;
     for(it = subtypes.constBegin(); it != subtypes.constEnd(); ++it) {
         const QString st = *it;
-        d->actuators.insert(st, QSharedPointer<QWActuator>(&actuator));
+        d->actuators.insert(st, actuator);
     };
 }
 
@@ -61,26 +61,26 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
     }
 
     //Executing the command on the selected actuators
-    QList<QSharedPointer<QWActuator> > matches = d->actuators.values(st[0]);
+    QList<QWActuator *> matches = d->actuators.values(st[0]);
     for(int i = 1; i<st.length(); i++){
-        foreach(QSharedPointer<QWActuator> ptr, d->actuators.values(st[i])){
+        foreach(QWActuator *ptr, d->actuators.values(st[i])){
             if(!matches.contains(ptr)){
                 matches.removeAll(ptr);
             }
         }
     }
     if(st.length() == 0){
-        const QList<QSharedPointer<QWActuator> > allMatches = d->actuators.values();
-        QList<QSharedPointer<QWActuator> >::const_iterator it;
+        const QList<QWActuator *> allMatches = d->actuators.values();
+        QList<QWActuator *>::const_iterator it;
         for(it = allMatches.constBegin(); it != allMatches.constEnd(); ++it){
-            QSharedPointer<QWActuator> ptr = *it;
+            QWActuator *ptr = *it;
             if(!matches.contains(ptr)){
                 matches.append(ptr);
             }
         }
     }
     if(matches.length() > 0){
-        foreach(QSharedPointer<QWActuator> ptr, matches){
+        foreach(QWActuator *ptr, matches){
             if(type == "GET"){
                 //if it is a GET message inform only the sender
                 sendMessage(senderJid, ptr->doGet(st, cmds));
