@@ -23,4 +23,9 @@ HEADERS += \
 OTHER_FILES += default_config/config \
     default_config/actuators.xml
 
+config.files = $$OTHER_FILES
+config.path = $$CONF_PATH
+target.path = $$PREFIX/$$BINDIR
+INSTALLS += target
+
 

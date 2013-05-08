@@ -8,8 +8,19 @@ isEmpty(PREFIX) {
     }
 }
 
+#Libraries directory
 isEmpty(LIBDIR) {
     LIBDIR = lib
+}
+
+#Executables directory
+isEmpty(BINDIR) {
+    BINDIR = bin
+}
+
+#Configurations directory
+isEmpty(CONF_PATH) {
+    CONF_PATH = /etc/whia
 }
 
 #Version numbers
@@ -20,12 +31,11 @@ DEFINES += "QW_VERSION_MINOR=$${QW_VERSION_MINOR}"
 QW_VERSION = $${QW_VERSION_MAJOR}.$${QW_VERSION_MINOR}
 DEFINES += "QW_VERSION=\\\"$${QW_VERSION}\\\""
 
+## CONSTANTS ##
+
 #Plugins directory
 PLUGINS_PATH = $$PREFIX/share/webdomo/plugins
 DEFINES += "PLUGINS_PATH=\\\"$${PLUGINS_PATH}\\\""
 
-#conf directory
-isEmpty(CONF_PATH) {
-    CONF_PATH = /etc/whia
-}
+#Configuration directory
 DEFINES += "CONF_PATH=\\\"$${CONF_PATH}\\\""
