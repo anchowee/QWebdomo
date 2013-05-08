@@ -26,6 +26,6 @@ OTHER_FILES += default_config/config \
 config.files = $$OTHER_FILES
 config.path = $$CONF_PATH
 target.path = $$PREFIX/$$BINDIR
-INSTALLS += target
+INSTALLS += target config
 
 
