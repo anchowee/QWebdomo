@@ -68,6 +68,8 @@ QList<QWActuator*> ConfParser::getActuators()
 QWActuator *ConfParser::parseActuator(QXmlStreamReader &xml)
 {
     QWActuator *actuator = 0;
+    QStringList subtypes;
+
     if(xml.tokenType() != QXmlStreamReader::StartElement && xml.name() == "actuator") {
         return actuator;
     }
@@ -76,6 +78,36 @@ QWActuator *ConfParser::parseActuator(QXmlStreamReader &xml)
     actuator = QWPluginsManager::loadActuator(attributes.value("type").toString(),
                                    attributes.value("version").toString().toDouble(),
                                    attributes.value("variant").toString());
+
+    xml.readNext();
+
+    while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "actuator")){
+
+        if(xml.name() == "subtype" && xml.tokenType() == QXmlStreamReader::StartElement){
+            subtypes.append(xml.attributes().value("name").toString());
+        }
+
+        if(xml.name() == "appliance" && xml.tokenType() == QXmlStreamReader::StartElement){
+            QWAppliance app;
+            app.setName(xml.attributes().value("name").toString());
+            app.setSubtypes(subtypes);
+
+            xml.readNext();
+            while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "appliance")){
+                if(xml.name() == "var"){
+                    const QString name(xml.attributes().value("name").toString());
+                    //TODO: value type should be different from string
+                    const QVariant value(xml.attributes().value("value").toString());
+                    app.setAttribute(name, value);
+                }
+
+                xml.readNext();
+            }
+            actuator->addAppliance(app);
+        }
+
+        xml.readNext();
+    }
 
     return actuator;
 }
