@@ -20,4 +20,7 @@ SOURCES += \
 HEADERS += \
     confparser.h
 
+OTHER_FILES += default_config/config \
+    default_config/actuators.xml
+
 
