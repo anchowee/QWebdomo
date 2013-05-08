@@ -11,7 +11,7 @@ QMAKE_LIBDIR += ../src
 INCLUDEPATH += ../src
 LIBS += -lqwebdomo -lqxmpp
 
-TARGET += whia
+TARGET = whia
 
 SOURCES += \
     main.cpp \
@@ -23,9 +23,9 @@ HEADERS += \
 OTHER_FILES += default_config/config \
     default_config/actuators.xml
 
-config.files = $$OTHER_FILES
-config.path = $$CONF_PATH
+conf.files = $$OTHER_FILES
+conf.path = $$CONF_PATH
 target.path = $$PREFIX/$$BINDIR
-INSTALLS += target config
+INSTALLS += target conf
 
 
