@@ -22,7 +22,18 @@
 #include <QFile>
 #include <QSettings>
 
-QWDeviceConfiguration ConfParser::getDeviceConfiguration()
+void Configurator::setDeviceConfiguration(const QWDeviceConfiguration &config)
+{
+    QSettings confFile(QString(CONF_PATH)+"/config", QSettings::IniFormat);
+    confFile.setValue("user", config.user());
+    confFile.setValue("password", config.password());
+    confFile.setValue("domain", config.domain());
+    confFile.setValue("TLS", config.streamSecurityMode() == QWDeviceConfiguration::TLSEnabled);
+    confFile.setValue("roomName", config.applianceSetRoomName());
+    confFile.setValue("serviceName", config.applianceSetServiceName());
+}
+
+QWDeviceConfiguration Configurator::getDeviceConfiguration()
 {
     QWDeviceConfiguration configuration;
     QSettings confFile(QString(CONF_PATH)+"/config", QSettings::IniFormat);
@@ -42,7 +53,7 @@ QWDeviceConfiguration ConfParser::getDeviceConfiguration()
     return configuration;
 }
 
-QList<QWActuator*> ConfParser::getActuators()
+QList<QWActuator*> Configurator::getActuators()
 {
     QList<QWActuator*> result;
     QFile confFile(QString(CONF_PATH)+"/actuators.xml");
@@ -65,7 +76,7 @@ QList<QWActuator*> ConfParser::getActuators()
     return result;
 }
 
-QWActuator *ConfParser::parseActuator(QXmlStreamReader &xml)
+QWActuator *Configurator::parseActuator(QXmlStreamReader &xml)
 {
     QWActuator *actuator = 0;
     QStringList subtypes;

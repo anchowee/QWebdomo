@@ -1,5 +1,15 @@
 <?xml version="1.0" standalone="yes" ?>
 <actuators>
-    <actuator type="fake">
+    <actuator type="fake" version="0.1" variant="">
+        <subtype name="home">
+            <appliance name="test">
+                <var name="testVar" value="1" />
+            </appliance>
+            <subtype name="livingroom">
+                <appliance name="light">
+                </appliance>
+            </subtype>
+        </subtype>
     </actuator>
+    <!-- here you can add more actuators -->
 </actuators>

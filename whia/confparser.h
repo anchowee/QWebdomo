@@ -22,9 +22,11 @@
 
 #include <QXmlStreamReader>
 
-class ConfParser
+class Configurator
 {
 public:
+    static bool setDeviceConfiguration(const QWDeviceConfiguration &config);
+
     static QWDeviceConfiguration getDeviceConfiguration();
     static QList<QWActuator *> getActuators();
 
