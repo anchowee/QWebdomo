@@ -22,15 +22,19 @@
 #include <QFile>
 #include <QSettings>
 
-void Configurator::setDeviceConfiguration(const QWDeviceConfiguration &config)
+bool Configurator::setDeviceConfiguration(const QWDeviceConfiguration &config)
 {
     QSettings confFile(QString(CONF_PATH)+"/config", QSettings::IniFormat);
+    if(confFile.status() != QSettings::NoError){
+        return false;
+    }
     confFile.setValue("user", config.user());
     confFile.setValue("password", config.password());
     confFile.setValue("domain", config.domain());
     confFile.setValue("TLS", config.streamSecurityMode() == QWDeviceConfiguration::TLSEnabled);
     confFile.setValue("roomName", config.applianceSetRoomName());
     confFile.setValue("serviceName", config.applianceSetServiceName());
+    return true;
 }
 
 QWDeviceConfiguration Configurator::getDeviceConfiguration()

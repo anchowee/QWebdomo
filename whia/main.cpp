@@ -19,10 +19,13 @@
 #include "QWControlDevice.h"
 #include "QWDeviceConfiguration.h"
 #include "confparser.h"
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+
+    qDebug() << a.arguments().at(0);
 
 //    QWDeviceConfiguration conf;
 //    conf.setDomain("picci");
@@ -30,8 +33,8 @@ int main(int argc, char *argv[])
 //    conf.setUser("appliance");
 //    conf.setPassword("123");
 
-    QWControlDevice dev(ConfParser::getDeviceConfiguration());
-    QList<QWActuator*> actuators = ConfParser::getActuators();
+    QWControlDevice dev(Configurator::getDeviceConfiguration());
+    QList<QWActuator*> actuators = Configurator::getActuators();
     for(int i = 0; i < actuators.length(); i++){
         dev.addActuator(actuators[i]);
     }
