@@ -4,14 +4,18 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QMultiHash>
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
 
 class QWControlDevicePrivate {
 public:
+    QWControlDevicePrivate(){}
     QMultiHash<QString, QWActuator *> actuators;
 };
 
 QWControlDevice::QWControlDevice(const QWDeviceConfiguration &configuration, QObject *parent) :
-    QWDevice(configuration, parent)
+    QWDevice(configuration, parent), d(new QWControlDevicePrivate)
 {
 }
 

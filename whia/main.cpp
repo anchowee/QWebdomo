@@ -37,8 +37,10 @@ int main(int argc, char *argv[])
 
     QWControlDevice dev(Configurator::getDeviceConfiguration());
     QList<QWActuator*> actuators = Configurator::getActuators();
+    qDebug() << "what is happening??";
     for(int i = 0; i < actuators.length(); i++){
         dev.addActuator(actuators[i]);
     }
-    return a.exec();
+    a.exec();
+    return 0;
 }
