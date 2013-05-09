@@ -25,13 +25,15 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    qDebug() << a.arguments().at(0);
-
-//    QWDeviceConfiguration conf;
-//    conf.setDomain("picci");
-//    conf.setStreamSecurityMode(QWDeviceConfiguration::TLSDisabled);
-//    conf.setUser("appliance");
-//    conf.setPassword("123");
+    if(a.arguments().indexOf("setconfig") != -1){
+        QWDeviceConfiguration conf;
+        conf.setDomain("picci");
+        conf.setStreamSecurityMode(QWDeviceConfiguration::TLSDisabled);
+        conf.setUser("appliance");
+        conf.setPassword("123");
+        if(!Configurator::setDeviceConfiguration(conf))
+            qDebug() << "cannot set configuratiion, check file permission";
+    }
 
     QWControlDevice dev(Configurator::getDeviceConfiguration());
     QList<QWActuator*> actuators = Configurator::getActuators();
