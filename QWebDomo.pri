@@ -34,7 +34,7 @@ DEFINES += "QW_VERSION=\\\"$${QW_VERSION}\\\""
 ## CONSTANTS ##
 
 #Plugins directory
-PLUGINS_PATH = $$LIBDIR/webdomo/plugins
+PLUGINS_PATH = $$PREFIX/$$LIBDIR/webdomo/plugins
 DEFINES += "PLUGINS_PATH=\\\"$${PLUGINS_PATH}\\\""
 
 #Configuration directory
