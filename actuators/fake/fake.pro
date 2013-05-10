@@ -1,6 +1,8 @@
 TEMPLATE        = lib
 CONFIG         += plugin
+
 INCLUDEPATH    += ../../src
+QMAKE_LIBDIR += ../../src
 LIBS += -lqwebdomo
 
 TARGET = $$qtLibraryTarget(fake)
