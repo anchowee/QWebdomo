@@ -36,17 +36,11 @@ void QWControlDevice::addActuator(QWActuator *actuator)
 
 void QWControlDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)
 {
-#ifdef QT_DEBUG
-    qDebug() << "Parsing message";
-    qDebug() << "Call type: " << type;
-#endif
     //Check if i can handle this message
     if(type != "GET" && type != "PUT") return;
+    if(!content.isObject()) return;
+
     QJsonObject obj = content.toObject();
-#ifdef QT_DEBUG
-    qDebug() << "Content: " << obj << " size: " << obj.size();
-#endif
-    if(obj.size() < 1) return;
 
     //Getting subtypes
     QStringList st;
@@ -67,6 +61,9 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
     QHash<QString, QVariant> cmds;
     QJsonValue commands = obj.value("commands");
     if(commands.isObject()){
+#ifdef QT_DEBUG
+        qDebug() << "getting commands";
+#endif
         QJsonObject cmdObj = commands.toObject();
         foreach(QString k, cmdObj.keys()){
             cmds.insert(k, cmdObj.value(k).toVariant());
@@ -74,15 +71,17 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
     }
 
     //Executing the command on the selected actuators
-    QList<QWActuator *> matches = d->actuators.values(st[0]);
-    for(int i = 1; i<st.length(); i++){
-        foreach(QWActuator *ptr, d->actuators.values(st[i])){
-            if(!matches.contains(ptr)){
-                matches.removeAll(ptr);
+    QList<QWActuator *> matches;
+    if(st.length() > 0){
+        matches = d->actuators.values(st[0]);
+        for(int i = 1; i<st.length(); i++){
+            foreach(QWActuator *ptr, d->actuators.values(st[i])){
+                if(!matches.contains(ptr)){
+                    matches.removeAll(ptr);
+                }
             }
         }
-    }
-    if(st.length() == 0){
+    } else {
 #ifdef QT_DEBUG
         qDebug() << "subtypes empty";
 #endif
