@@ -38,7 +38,7 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
 {
 #ifdef QT_DEBUG
     qDebug() << "Parsing message";
-    qDebug() << "Call type: " << type << " Content: " << content.stringData;
+    qDebug() << "Call type: " << type << " Content: " << content.toObject();
 #endif
 
     //Check if i can handle this message
