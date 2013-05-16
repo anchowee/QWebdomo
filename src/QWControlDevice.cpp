@@ -79,6 +79,9 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
         }
     }
     if(st.length() == 0){
+#ifdef QT_DEBUG
+        qDebug() << "subtypes are empty";
+#endif
         const QList<QWActuator *> allMatches = d->actuators.values();
         QList<QWActuator *>::const_iterator it;
         for(it = allMatches.constBegin(); it != allMatches.constEnd(); ++it){
