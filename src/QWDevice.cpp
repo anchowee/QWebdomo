@@ -79,7 +79,7 @@ void QWDevice::addDevice(const QString &jid)
 
 void QWDevice::_parseMessage(const QXmppMessage &message)
 {
-    QJsonDocument doc = QJsonDocument::fromBinaryData(message.body().toUtf8());
+    QJsonDocument doc = QJsonDocument::fromJson(message.body().toUtf8());
     QJsonObject obj = doc.object();
     QJsonValue action = obj.value("action");
     QString type = action.toString();
