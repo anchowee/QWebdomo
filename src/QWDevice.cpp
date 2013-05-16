@@ -58,6 +58,9 @@ QString QWDevice::roomJid() const
 
 void QWDevice::startChat()
 {
+#ifdef QT_DEBUG
+    qDebug() << "starting chat";
+#endif
     QXmppMucRoom *room = d->mucManager.addRoom(d->configuration.roomJid());
     room->setNickName(configuration().jid());
     room->join();

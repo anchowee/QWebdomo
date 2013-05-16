@@ -36,6 +36,11 @@ void QWControlDevice::addActuator(QWActuator *actuator)
 
 void QWControlDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)
 {
+#ifdef QT_DEBUG
+    qDebug() << "Parsing message";
+    qDebug() << "Call type: " << type;
+#endif
+
     //Check if i can handle this message
     if(type != "GET" || type != "PUT") return;
     if(!content.isObject()) return;
