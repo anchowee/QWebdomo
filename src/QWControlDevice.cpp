@@ -75,11 +75,16 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
                 }
             }
         }
+        foreach(QWActuator *ptr, matches){
+            if(type == "GET"){
+                //if it is a GET message inform only the sender
+                sendMessage(senderJid, ptr->doGet(st, cmds));
+            } else {
+                emit sendRoomMessage(ptr->doPut(st, cmds));
+            }
+        }
     } else {
         const QList<QWActuator *> allMatches = d->actuators.values();
-#ifdef QT_DEBUG
-        qDebug() << "subtypes empty, keys:" << d->actuators.keys();
-#endif
         QList<QWActuator *>::const_iterator it;
         for(it = allMatches.constBegin(); it != allMatches.constEnd(); ++it){
             QWActuator *ptr = *it;
@@ -87,17 +92,13 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
                 matches.append(ptr);
             }
         }
-    }
-    if(matches.length() > 0){
         foreach(QWActuator *ptr, matches){
-#ifdef QT_DEBUG
-            qDebug() << "get on actuator";
-#endif
+            QStringList allSubtypes = ptr->getSubtypes();
             if(type == "GET"){
                 //if it is a GET message inform only the sender
-                sendMessage(senderJid, ptr->doGet(st, cmds));
+                sendMessage(senderJid, ptr->doGet(allSubtypes, cmds));
             } else {
-                emit sendRoomMessage(ptr->doPut(st, cmds));
+                emit sendRoomMessage(ptr->doPut(allSubtypes, cmds));
             }
         }
     }
