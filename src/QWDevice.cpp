@@ -83,6 +83,5 @@ void QWDevice::_parseMessage(const QXmppMessage &message)
     QJsonObject obj = doc.object();
     QJsonValue action = obj.value("action");
     QString type = action.toString();
-    QJsonValue content = obj.value("content");
-    parseMessage(message.from(), type, content);
+    parseMessage(message.from(), type, obj.value("content"));
 }
