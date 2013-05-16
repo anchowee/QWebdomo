@@ -53,17 +53,11 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
             }
         }
     }
-#ifdef QT_DEBUG
-    qDebug() << "subtypes length: " << st.length();
-#endif
 
     //Getting commands
     QHash<QString, QVariant> cmds;
     QJsonValue commands = obj.value("commands");
     if(commands.isObject()){
-#ifdef QT_DEBUG
-        qDebug() << "getting commands";
-#endif
         QJsonObject cmdObj = commands.toObject();
         foreach(QString k, cmdObj.keys()){
             cmds.insert(k, cmdObj.value(k).toVariant());
@@ -82,10 +76,10 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
             }
         }
     } else {
-#ifdef QT_DEBUG
-        qDebug() << "subtypes empty";
-#endif
         const QList<QWActuator *> allMatches = d->actuators.values();
+#ifdef QT_DEBUG
+        qDebug() << "subtypes empty, keys:" << d->actuators.keys();
+#endif
         QList<QWActuator *>::const_iterator it;
         for(it = allMatches.constBegin(); it != allMatches.constEnd(); ++it){
             QWActuator *ptr = *it;
@@ -96,6 +90,9 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
     }
     if(matches.length() > 0){
         foreach(QWActuator *ptr, matches){
+#ifdef QT_DEBUG
+            qDebug() << "get on actuator";
+#endif
             if(type == "GET"){
                 //if it is a GET message inform only the sender
                 sendMessage(senderJid, ptr->doGet(st, cmds));
