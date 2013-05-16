@@ -30,6 +30,7 @@ bool Configurator::setDeviceConfiguration(const QWDeviceConfiguration &config)
     }
     confFile.setValue("user", config.user());
     confFile.setValue("password", config.password());
+    confFile.setValue("host", config.host());
     confFile.setValue("domain", config.domain());
     confFile.setValue("TLS", config.streamSecurityMode() == QWDeviceConfiguration::TLSEnabled);
     confFile.setValue("roomName", config.applianceSetRoomName());
@@ -47,6 +48,7 @@ QWDeviceConfiguration Configurator::getDeviceConfiguration()
     configuration.setUser(confFile.value("user", QVariant("guest")).toString());
     configuration.setPassword(confFile.value("password", QVariant("guest")).toString());
     configuration.setDomain(confFile.value("domain", QVariant("local")).toString());
+    configuration.setHost(confFile.value("host", QVariant("localhost")).toString());
     if(confFile.value("TLS").toBool()){
         configuration.setStreamSecurityMode(QWDeviceConfiguration::TLSEnabled);
     } else {

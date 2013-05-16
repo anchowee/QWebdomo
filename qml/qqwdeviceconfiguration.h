@@ -29,6 +29,7 @@ class QQWDeviceConfiguration : public QObject, public QWDeviceConfiguration
     Q_PROPERTY(QString userName READ userName WRITE setUserName)
     Q_PROPERTY(QString password READ password WRITE setPassword)
     Q_PROPERTY(QString domain READ domain WRITE setDomain)
+    Q_PROPERTY(QString host READ host WRITE setHost)
     Q_PROPERTY(QString roomName READ roomName WRITE setRoomName)
     Q_PROPERTY(QString serviceName READ serviceName WRITE setServiceName)
     Q_PROPERTY(QString roomJid READ roomJid)
