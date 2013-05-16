@@ -93,12 +93,8 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
             }
         }
         foreach(QWActuator *ptr, matches){
-            QStringList allSubtypes = ptr->getSubtypes();
             if(type == "GET"){
-                //if it is a GET message inform only the sender
-                sendMessage(senderJid, ptr->doGet(allSubtypes, cmds));
-            } else {
-                emit sendRoomMessage(ptr->doPut(allSubtypes, cmds));
+                sendMessage(senderJid, ptr->getAll());
             }
         }
     }

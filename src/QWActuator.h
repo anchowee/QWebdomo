@@ -34,6 +34,7 @@ public:
     virtual QList<QWAppliance> put(QStringList &subtypes, QHash<QString, QVariant> &attributes) = 0;
     virtual QList<QWAppliance> get(QStringList &subtypes, QHash<QString, QVariant> &attributes) = 0;
 
+    QString getAll() const;
     QString doGet(QStringList &subtypes, QHash<QString, QVariant> &attributes);
     QString doPut(QStringList &subtypes, QHash<QString, QVariant> &attributes);
 

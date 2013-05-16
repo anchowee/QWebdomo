@@ -49,6 +49,11 @@ QStringList QWActuator::getSubtypes() const
     return subtypes;
 }
 
+QString QWActuator::getAll() const
+{
+    return formatResponse("GET", _appliances);
+}
+
 QString QWActuator::doGet(QStringList &subtypes, QHash<QString, QVariant> &attributes)
 {
     return formatResponse("GET", get(subtypes, attributes));
