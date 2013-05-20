@@ -31,7 +31,7 @@ void QWCommanderDevice::parseMessage(const QString &senderJid, const QString &ty
 
     QList<QQWAppliance *> applianceList;
     for(it = arr.constBegin(); it != arr.constEnd(); ++it){
-        QJsonObject el = QJsonValue(*it).toObject();
+        QJsonObject el = (*it).toObject();
         QQWAppliance *app = new QQWAppliance;
 
         app->setName(el.value("name").toString());
