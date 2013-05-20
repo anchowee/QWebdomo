@@ -8,22 +8,14 @@ QWFakeActuator::QWFakeActuator(QObject *parent) :
 {
 }
 
-QList<QWAppliance> QWFakeActuator::put(QStringList &subtypes, QHash<QString, QVariant> &attributes)
+void QWFakeActuator::changeState(QList<QWAppliance> *selectedAppliances, const QHash<QString, QVariant> &newStates)
 {
-    return find(subtypes);
-}
-
-QList<QWAppliance> QWFakeActuator::get(QStringList &subtypes, QHash<QString, QVariant> &attributes)
-{
-#ifdef QT_DEBUG
-    qDebug() << "do get";
-#endif
-    QList<QWAppliance> apps = find(subtypes);
-    for(int i = 0; i != apps.length(); i++){
-        QHash<QString, QVariant>::const_iterator hi;
-        for(hi = attributes.constBegin(); hi != attributes.constEnd(); ++hi){
-            apps[i].setAttribute(hi.key(), hi.value());
+    const QStringList keys = newStates.keys();
+    QStringList::const_iterator ki;
+    QList<QWAppliance>::iterator li;
+    for(li = selectedAppliances->begin(); li != selectedAppliances->end(); li++){
+        for(ki = keys.constBegin(); ki != keys.constEnd(); ki++){
+            li->setAttribute(*ki, newStates.value(*ki));
         }
     }
-    return apps;
 }

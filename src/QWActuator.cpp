@@ -49,19 +49,19 @@ QStringList QWActuator::getSubtypes() const
     return subtypes;
 }
 
-QString QWActuator::getAll() const
+QString QWActuator::put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
 {
-    return formatResponse("GET", *_appliances);
+    QList<QWAppliance> appsToChange = find(subtypes);
+    if(appsToChange.length() == 0) return QString();
+    changeState(&appsToChange, attributes);
+    return formatResponse("PUT", appsToChange);
 }
 
-QString QWActuator::doGet(QStringList &subtypes, QHash<QString, QVariant> &attributes)
+QString QWActuator::get(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
 {
-    return formatResponse("GET", get(subtypes, attributes));
-}
-
-QString QWActuator::doPut(QStringList &subtypes, QHash<QString, QVariant> &attributes)
-{
-    return formatResponse("PUT", put(subtypes, attributes));
+    const QList<QWAppliance> apps = find(subtypes, attributes);
+    if(apps.length() == 0) return QString();
+    return formatResponse("GET", apps);
 }
 
 QString QWActuator::formatResponse(const QString &respType, const QList<QWAppliance> &appliances) const
@@ -105,29 +105,36 @@ void QWActuator::addAppliance(const QWAppliance &app)
         _appliances->append(app);
 }
 
-QList<QWAppliance> QWActuator::find(QStringList &subtypes)
+QList<QWAppliance> QWActuator::find(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
 {
 #ifdef QT_DEBUG
-    qDebug() << "Finding; subtypes length: " << subtypes.length();
-    for(int i = 0; i < subtypes.length(); ++i){
-        qDebug() << subtypes.at(i);
-    }
+    qDebug() << "Finding";
 #endif
-    QList<QWAppliance> results;
-    if(subtypes.length() == 0) return results;
-
-    results.append(*_appliances);
-    subtypes.sort();
-    QList<QWAppliance>::const_iterator it;
-    for(it = _appliances->constBegin(); it != _appliances->constEnd(); ++it){
-        const QWAppliance app = *it;
-        int y = 0;
-        for(int i = 0; i < subtypes.length(); i++){
-            y = app.subtypes().indexOf(subtypes.at(i), y);
-            if(y == -1 ){
-                results.removeAll(app);
+    QList<QWAppliance> results = *_appliances;
+    if(subtypes.length() != 0) {
+        for(int i = results.length(); i >=0; i--){
+            for(int j = 0; j < subtypes.length(); j++){
+                QList<QString>::const_iterator it = qBinaryFind(results[i].subtypes(), subtypes[j]);
+                if(it == results[i].subtypes().constEnd()){
+                    results.removeAt(i);
+                    break;
+                }
             }
         }
     }
+
+    const QStringList keys = attributes.keys();
+    if(attributes.keys().length() != 0) {
+        for(int i = results.length(); i >= 0; i--){
+            for(int j = 0; j < keys.length(); j++){
+                const QVariant r = results[i].attributes().value(keys[j]);
+                if(r != attributes.value(keys[j])){
+                    results.removeAt(i);
+                    break;
+                }
+            }
+        }
+    }
+
     return results;
 }

@@ -29,14 +29,12 @@ public:
     explicit QWActuator(QObject *parent = 0);
     ~QWActuator();
 
-    QStringList getSubtypes() const;
+    QStringList getSubtypes() const; //TODO: maybe this can be deleted
 
-    virtual QList<QWAppliance> put(QStringList &subtypes, QHash<QString, QVariant> &attributes) = 0;
-    virtual QList<QWAppliance> get(QStringList &subtypes, QHash<QString, QVariant> &attributes) = 0;
+    virtual void changeState(QList<QWAppliance> *selectedAppliances, const QHash<QString, QVariant> &newStates) = 0;
 
-    QString getAll() const;
-    QString doGet(QStringList &subtypes, QHash<QString, QVariant> &attributes);
-    QString doPut(QStringList &subtypes, QHash<QString, QVariant> &attributes);
+    virtual QString put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes);
+    virtual QString get(const QStringList &subtypes, const QHash<QString, QVariant> &attributes);
 
 signals:
     void appliancesChanged();
@@ -45,7 +43,7 @@ public slots:
     void addAppliance(const QWAppliance &app);
 
 protected:
-    QList<QWAppliance> find(QStringList &subtypes);
+    QList<QWAppliance> find(const QStringList &subtypes, const QHash<QString, QVariant> &attributes = QHash<QString, QVariant>());
     
 private:
     QString formatResponse(const QString &respType, const QList<QWAppliance> &appliances) const;

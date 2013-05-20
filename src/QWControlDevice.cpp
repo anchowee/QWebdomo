@@ -11,7 +11,7 @@
 class QWControlDevicePrivate {
 public:
     QWControlDevicePrivate(){}
-    QMultiHash<QString, QWActuator *> actuators;
+    QList<QWActuator *> actuators;
 };
 
 QWControlDevice::QWControlDevice(const QWDeviceConfiguration &configuration, QObject *parent) :
@@ -26,12 +26,9 @@ QWControlDevice::~QWControlDevice()
 
 void QWControlDevice::addActuator(QWActuator *actuator)
 {
-    const QStringList subtypes = actuator->getSubtypes();
-    QStringList::const_iterator it;
-    for(it = subtypes.constBegin(); it != subtypes.constEnd(); ++it) {
-        const QString st = *it;
-        d->actuators.insert(st, actuator);
-    };
+    if(!d->actuators.contains(actuator)){
+        d->actuators.append(actuator);
+    }
 }
 
 void QWControlDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)
@@ -65,36 +62,19 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
     }
 
     //Executing the command on the selected actuators
-    QList<QWActuator *> matches;
-    if(st.length() > 0){
-        matches = d->actuators.values(st[0]);
-        for(int i = 1; i<st.length(); i++){
-            foreach(QWActuator *ptr, d->actuators.values(st[i])){
-                if(!matches.contains(ptr)){
-                    matches.removeAll(ptr);
-                }
+    QList<QWActuator *>::iterator i;
+    if(type == "GET"){ //the response will be sent only to the caller
+        for(i = d->actuators.begin(); i != d->actuators.end(); i++){
+            const QString resp = (*i)->get(st, cmds);
+            if(!resp.isEmpty()){
+                sendMessage(senderJid, resp);
             }
         }
-        foreach(QWActuator *ptr, matches){
-            if(type == "GET"){
-                //if it is a GET message inform only the sender
-                sendMessage(senderJid, ptr->doGet(st, cmds));
-            } else {
-                emit sendRoomMessage(ptr->doPut(st, cmds));
-            }
-        }
-    } else {
-        const QList<QWActuator *> allMatches = d->actuators.values();
-        QList<QWActuator *>::const_iterator it;
-        for(it = allMatches.constBegin(); it != allMatches.constEnd(); ++it){
-            QWActuator *ptr = *it;
-            if(!matches.contains(ptr)){
-                matches.append(ptr);
-            }
-        }
-        foreach(QWActuator *ptr, matches){
-            if(type == "GET"){
-                sendMessage(senderJid, ptr->getAll());
+    } else { // type == PUT => the response is sent on the group chat
+        for(i = d->actuators.begin(); i != d->actuators.end(); i++){
+            const QString resp = (*i)->get(st, cmds);
+            if(!resp.isEmpty()){
+                emit sendRoomMessage(resp);
             }
         }
     }

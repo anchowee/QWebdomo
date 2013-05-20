@@ -43,10 +43,10 @@ int main(int argc, char *argv[])
     QStringList sl;
     QHash<QString, QVariant> qh;
     qDebug() << "-- doGet empty test";
-    qDebug() << actuator->doGet(sl,qh);
+    qDebug() << actuator->get(sl,qh);
     sl.append("home");
     sl.append("aab");
     qDebug() << "-- doGet with home subtype";
-    qDebug() << actuator->doGet(sl, qh);
+    qDebug() << actuator->get(sl, qh);
     qDebug() << "done";
 }
