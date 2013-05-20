@@ -99,9 +99,6 @@ QString QWActuator::formatResponse(const QString &respType, const QList<QWApplia
 void QWActuator::addAppliance(const QWAppliance &app)
 {
     if(!_appliances->contains(app))
-#ifdef QT_DEBUG
-    qDebug() << "adding appliance";
-#endif
         _appliances->append(app);
 }
 
