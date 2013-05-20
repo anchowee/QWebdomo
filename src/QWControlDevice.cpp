@@ -34,7 +34,7 @@ void QWControlDevice::addActuator(QWActuator *actuator)
 void QWControlDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)
 {
     //Check if i can handle this message
-    if(type != "GET" && type != "PUT") return;
+    if(type != "GET" || type != "PUT") return;
     if(!content.isObject()) return;
 
     QJsonObject obj = content.toObject();
