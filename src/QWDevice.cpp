@@ -67,7 +67,7 @@ void QWDevice::startChat()
 
     connect(this, SIGNAL(sendRoomMessage(QString)), room, SLOT(sendMessage(QString)));
     connect(room, SIGNAL(participantAdded(QString)), this, SLOT(addDevice(QString)));
-    connect(room, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(_parseMessage(QXmppMessage)));
+    //connect(room, SIGNAL(messageReceived(QXmppMessage)), this, SLOT(_parseMessage(QXmppMessage)));
 }
 
 void QWDevice::addDevice(const QString &jid)
@@ -79,6 +79,9 @@ void QWDevice::addDevice(const QString &jid)
 
 void QWDevice::_parseMessage(const QXmppMessage &message)
 {
+#ifdef QT_DEBUG
+    qDebug() << "Parsing message";
+#endif
     QJsonDocument doc = QJsonDocument::fromJson(message.body().toUtf8());
     QJsonObject obj = doc.object();
     QJsonValue action = obj.value("action");
