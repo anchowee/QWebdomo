@@ -21,6 +21,15 @@ void QWCommanderDevice::getAll()
     emit sendRoomMessage(QString(doc.toJson()));
 }
 
+void QWCommanderDevice::changeApplianceProperty(const QQWAppliance *app, const QString &name, const QVariant &newValue)
+{
+    QStringList subtypes;
+    subtypes.append(app->name());
+    QHash<QString, QVariant> properties;
+    properties.insert(name, newValue);
+    composeAndSendRequest("PUT", subtypes, properties);
+}
+
 void QWCommanderDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)
 {
     if(!type.contains("NOTIFY")) return;
@@ -54,4 +63,26 @@ void QWCommanderDevice::parseMessage(const QString &senderJid, const QString &ty
         return;
     }
     emit setAppliances(applianceList);
+}
+
+
+void QWCommanderDevice::composeAndSendRequest(const QString &type, const QStringList &subtypes, const QHash<QString, QVariant> &properties)
+{
+    QJsonObject content;
+    //Set message subtypes
+    content.insert("subtypes", QJsonArray::fromStringList(subtypes));
+    //Set message attributes
+    QJsonObject attributes;
+    const QStringList attKeys = properties.keys();
+    QStringList::const_iterator i;
+    for(i = attKeys.constBegin(); i != attKeys.constEnd(); i++){
+        attributes.insert(*i, attributes.value(*i));
+    }
+    content.insert("attributes", attributes);
+    //Add message content
+    QJsonObject messageContent;
+    messageContent.insert("action", QJsonValue(type));
+    messageContent.insert("content", content);
+    const QJsonDocument doc(messageContent);
+    emit sendRoomMessage(QString(doc.toJson()));
 }
