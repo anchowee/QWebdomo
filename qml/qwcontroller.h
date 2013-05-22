@@ -48,7 +48,7 @@ signals:
     void connected();
 
 public slots:
-    changeApplianceProperty(const QQWAppliance *app, const QString &name, const QVariant &newValue)
+    changeApplianceProperty(const QQWAppliance *app, const QString &name, const QVariant &newValue);
 
 private slots:
     void updateAppliances(const QList<QQWAppliance *> &appList);
