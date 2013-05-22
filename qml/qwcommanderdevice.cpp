@@ -21,13 +21,9 @@ void QWCommanderDevice::getAll()
     emit sendRoomMessage(QString(doc.toJson()));
 }
 
-void QWCommanderDevice::changeApplianceProperty(const QQWAppliance *app, const QString &name, const QVariant &newValue)
+void QWCommanderDevice::changeAppliancesProperties(const QStringList &subtypes, const QHash<QString, QVariant> &values)
 {
-    QStringList subtypes;
-    subtypes.append(app->name());
-    QHash<QString, QVariant> properties;
-    properties.insert(name, newValue);
-    composeAndSendRequest("PUT", subtypes, properties);
+    composeAndSendRequest("PUT", subtypes, values);
 }
 
 void QWCommanderDevice::parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content)

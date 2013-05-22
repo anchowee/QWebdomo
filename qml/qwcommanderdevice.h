@@ -14,7 +14,7 @@ public:
 
 public slots:
     void getAll();
-    void changeApplianceProperty(const QQWAppliance *app, const QString &name, const QVariant &newValue);
+    void changeAppliancesProperties(const QStringList &subtypes, const QHash<QString, QVariant> &values);
 
 signals:
     void updateAppliances(const QList<QQWAppliance *> &appList);
