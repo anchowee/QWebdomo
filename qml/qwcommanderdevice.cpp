@@ -72,7 +72,7 @@ void QWCommanderDevice::composeAndSendRequest(const QString &type, const QString
     const QStringList attKeys = properties.keys();
     QStringList::const_iterator i;
     for(i = attKeys.constBegin(); i != attKeys.constEnd(); i++){
-        attributes.insert(*i, attributes.value(*i));
+        attributes.insert(*i, QJsonValue::fromVariant(properties.value(*i)));
     }
     content.insert("attributes", attributes);
     //Add message content

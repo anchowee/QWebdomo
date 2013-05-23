@@ -122,7 +122,7 @@ QList<QWAppliance> QWActuator::find(const QStringList &subtypes, const QHash<QSt
 
     const QStringList keys = attributes.keys();
     if(attributes.keys().length() != 0) {
-        for(int i = results.length(); i >= 0; i--){
+        for(int i = results.length()-1; i >= 0; i--){
             for(int j = 0; j < keys.length(); j++){
                 const QVariant r = results[i].attributes().value(keys[j]);
                 if(r != attributes.value(keys[j])){
