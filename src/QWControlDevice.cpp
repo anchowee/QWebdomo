@@ -72,7 +72,7 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
         }
     } else { // type == PUT => the response is sent on the group chat
         for(i = d->actuators.begin(); i != d->actuators.end(); i++){
-            const QString resp = (*i)->get(st, cmds);
+            const QString resp = (*i)->put(st, cmds);
             if(!resp.isEmpty()){
                 emit sendRoomMessage(resp);
             }
