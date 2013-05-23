@@ -109,7 +109,7 @@ QList<QWAppliance> QWActuator::find(const QStringList &subtypes, const QHash<QSt
 #endif
     QList<QWAppliance> results = *_appliances;
     if(subtypes.length() != 0) {
-        for(int i = results.length(); i >=0; i--){
+        for(int i = results.length()-1; i >=0; i--){
             for(int j = 0; j < subtypes.length(); j++){
                 QList<QString>::const_iterator it = qBinaryFind(results[i].subtypes(), subtypes[j]);
                 if(it == results[i].subtypes().constEnd()){
