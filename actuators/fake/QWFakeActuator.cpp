@@ -13,14 +13,8 @@ void QWFakeActuator::changeState(QList<QSharedPointer<QWAppliance> > *selectedAp
     const QStringList keys = newStates.keys();
     QStringList::const_iterator ki;
     QList<QSharedPointer<QWAppliance> >::iterator li;
-#ifdef QT_DEBUG
-    qDebug() << "Fake acuator in action on " << keys;
-#endif
     for(li = selectedAppliances->begin(); li != selectedAppliances->end(); li++){
         for(ki = keys.constBegin(); ki != keys.constEnd(); ki++){
-#ifdef QT_DEBUG
-            qDebug() << "changing value " << *ki << " to " << newStates.value(*ki);
-#endif
             (*li)->setAttribute(*ki, newStates.value(*ki));
         }
     }
