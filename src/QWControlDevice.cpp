@@ -51,13 +51,13 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
         }
     }
 
-    //Getting commands
-    QHash<QString, QVariant> cmds;
-    QJsonValue commands = obj.value("commands");
-    if(commands.isObject()){
-        QJsonObject cmdObj = commands.toObject();
-        foreach(QString k, cmdObj.keys()){
-            cmds.insert(k, cmdObj.value(k).toVariant());
+    //Getting attributes
+    QHash<QString, QVariant> atts;
+    QJsonValue attributes = obj.value("attributes");
+    if(attributes.isObject()){
+        QJsonObject attObj = attributes.toObject();
+        foreach(QString k, attObj.keys()){
+            atts.insert(k, attObj.value(k).toVariant());
         }
     }
 
@@ -65,14 +65,14 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
     QList<QWActuator *>::iterator i;
     if(type == "GET"){ //the response will be sent only to the caller
         for(i = d->actuators.begin(); i != d->actuators.end(); i++){
-            const QString resp = (*i)->get(st, cmds);
+            const QString resp = (*i)->get(st, atts);
             if(!resp.isEmpty()){
                 sendMessage(senderJid, resp);
             }
         }
     } else { // type == PUT => the response is sent on the group chat
         for(i = d->actuators.begin(); i != d->actuators.end(); i++){
-            const QString resp = (*i)->put(st, cmds);
+            const QString resp = (*i)->put(st, atts);
             if(!resp.isEmpty()){
                 emit sendRoomMessage(resp);
             }
