@@ -21,6 +21,7 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QSharedPointer>
 
 class QWActuator : public QObject
 {
@@ -31,7 +32,7 @@ public:
 
     QStringList getSubtypes() const; //TODO: maybe this can be deleted
 
-    virtual void changeState(QList<QWAppliance> *selectedAppliances, const QHash<QString, QVariant> &newStates) = 0;
+    virtual void changeState(QList<QSharedPointer<QWAppliance> > *selectedAppliances, const QHash<QString, QVariant> &newStates) = 0;
 
     virtual QString put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes);
     virtual QString get(const QStringList &subtypes, const QHash<QString, QVariant> &attributes);
@@ -40,16 +41,16 @@ signals:
     void appliancesChanged();
 
 public slots:
-    void addAppliance(const QWAppliance &app);
+    void addAppliance(const QSharedPointer<QWAppliance> app);
 
 protected:
-    QList<QWAppliance> find(const QStringList &subtypes, const QHash<QString, QVariant> &attributes = QHash<QString, QVariant>());
+    QList<QSharedPointer<QWAppliance> > find(const QStringList &subtypes, const QHash<QString, QVariant> &attributes = QHash<QString, QVariant>());
     
 private:
-    QString formatResponse(const QString &respType, const QList<QWAppliance> &appliances) const;
+    QString formatResponse(const QString &respType, const QList<QSharedPointer<QWAppliance> > &appliances) const;
 
 private:
-    QList<QWAppliance> *_appliances;
+    QList<QSharedPointer<QWAppliance> > *_appliances;
 
 };
 

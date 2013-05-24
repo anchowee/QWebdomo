@@ -21,6 +21,7 @@
 #include <QDir>
 #include <QFile>
 #include <QSettings>
+#include <QSharedPointer>
 
 bool Configurator::setDeviceConfiguration(const QWDeviceConfiguration &config)
 {
@@ -105,9 +106,9 @@ QWActuator *Configurator::parseActuator(QXmlStreamReader &xml)
         }
 
         if(xml.name() == "appliance" && xml.tokenType() == QXmlStreamReader::StartElement){
-            QWAppliance app;
-            app.setName(xml.attributes().value("name").toString());
-            app.setSubtypes(subtypes);
+            QSharedPointer<QWAppliance> app = QSharedPointer<QWAppliance>(new QWAppliance());
+            app->setName(xml.attributes().value("name").toString());
+            app->setSubtypes(subtypes);
 
             xml.readNext();
             while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "appliance")){
@@ -117,7 +118,7 @@ QWActuator *Configurator::parseActuator(QXmlStreamReader &xml)
                     bool ok = false;
                     double valueDouble = valueString.toDouble(&ok);
                     const QVariant value = ok ? QVariant(valueDouble) : QVariant(valueString);
-                    app.setAttribute(name, value);
+                    app->setAttribute(name, value);
                 }
 
                 xml.readNext();

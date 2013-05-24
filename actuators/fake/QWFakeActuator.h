@@ -11,7 +11,7 @@ class QWFakeActuator : public QWActuator
 public:
     explicit QWFakeActuator(QObject *parent = 0);
     
-    void changeState(QList<QWAppliance> *selectedAppliances, const QHash<QString, QVariant> &newStates);
+    void changeState(QList<QSharedPointer<QWAppliance> > *selectedAppliances, const QHash<QString, QVariant> &newStates);
     
 };
 

@@ -8,11 +8,11 @@ QWFakeActuator::QWFakeActuator(QObject *parent) :
 {
 }
 
-void QWFakeActuator::changeState(QList<QWAppliance> *selectedAppliances, const QHash<QString, QVariant> &newStates)
+void QWFakeActuator::changeState(QList<QSharedPointer<QWAppliance> > *selectedAppliances, const QHash<QString, QVariant> &newStates)
 {
     const QStringList keys = newStates.keys();
     QStringList::const_iterator ki;
-    QList<QWAppliance>::iterator li;
+    QList<QSharedPointer<QWAppliance> >::iterator li;
 #ifdef QT_DEBUG
     qDebug() << "Fake acuator in action on " << keys;
 #endif
@@ -21,7 +21,7 @@ void QWFakeActuator::changeState(QList<QWAppliance> *selectedAppliances, const Q
 #ifdef QT_DEBUG
             qDebug() << "changing value " << *ki << " to " << newStates.value(*ki);
 #endif
-            li->setAttribute(*ki, newStates.value(*ki));
+            (*li)->setAttribute(*ki, newStates.value(*ki));
         }
     }
 }

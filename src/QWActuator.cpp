@@ -31,7 +31,7 @@ QWActuator::QWActuator(QObject *parent) :
 #ifdef QT_DEBUG
     qDebug() << "Creating new actuator";
 #endif
-    _appliances = new QList<QWAppliance>();
+    _appliances = new QList<QSharedPointer<QWAppliance> >();
 }
 
 QWActuator::~QWActuator()
@@ -43,15 +43,15 @@ QStringList QWActuator::getSubtypes() const
 {
     QStringList subtypes;
     for(int i = 0; i < _appliances->length(); i++){
-        subtypes.append(_appliances->at(i).subtypes());
-        subtypes.append(_appliances->at(i).name());
+        subtypes.append(_appliances->at(i)->subtypes());
+        subtypes.append(_appliances->at(i)->name());
     }
     return subtypes;
 }
 
 QString QWActuator::put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
 {
-    QList<QWAppliance> appsToChange = find(subtypes);
+    QList<QSharedPointer<QWAppliance> > appsToChange = find(subtypes);
     if(appsToChange.length() == 0) return QString();
     changeState(&appsToChange, attributes);
     return formatResponse("PUT", appsToChange);
@@ -59,12 +59,12 @@ QString QWActuator::put(const QStringList &subtypes, const QHash<QString, QVaria
 
 QString QWActuator::get(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
 {
-    const QList<QWAppliance> apps = find(subtypes, attributes);
+    const QList<QSharedPointer<QWAppliance> > apps = find(subtypes, attributes);
     if(apps.length() == 0) return QString();
     return formatResponse("GET", apps);
 }
 
-QString QWActuator::formatResponse(const QString &respType, const QList<QWAppliance> &appliances) const
+QString QWActuator::formatResponse(const QString &respType, const QList<QSharedPointer<QWAppliance> > &appliances) const
 {
     // it returns an object like:
     // { action:"NOTIFY_GET", content:[{name: "example", subtypes: [], attributes:{k:v}}]}
@@ -72,19 +72,19 @@ QString QWActuator::formatResponse(const QString &respType, const QList<QWApplia
     qDebug() << "formatting response";
 #endif
     QJsonArray appliancesArray;
-    QList<QWAppliance>::const_iterator it;
+    QList<QSharedPointer<QWAppliance> >::const_iterator it;
     for(it = appliances.constBegin(); it != appliances.constEnd(); ++it){
-        const QWAppliance el = *it;
+        const QSharedPointer<QWAppliance> el = *it;
         QJsonObject app;
 
         QJsonObject attributes;
         QHash<QString, QVariant>::const_iterator hi;
-        for(hi = el.attributes().constBegin(); hi != el.attributes().constEnd(); ++hi){
+        for(hi = el->attributes().constBegin(); hi != el->attributes().constEnd(); ++hi){
             attributes.insert(hi.key(), QJsonValue::fromVariant(hi.value()));
         }
 
-        app.insert("name", QJsonValue(el.name()));
-        app.insert("subtypes", QJsonArray::fromStringList(el.subtypes()));
+        app.insert("name", QJsonValue(el->name()));
+        app.insert("subtypes", QJsonArray::fromStringList(el->subtypes()));
         app.insert("attributes", attributes);
         appliancesArray.append(app);
     }
@@ -96,23 +96,23 @@ QString QWActuator::formatResponse(const QString &respType, const QList<QWApplia
 }
 
 
-void QWActuator::addAppliance(const QWAppliance &app)
+void QWActuator::addAppliance(const QSharedPointer<QWAppliance> app)
 {
     if(!_appliances->contains(app))
         _appliances->append(app);
 }
 
-QList<QWAppliance> QWActuator::find(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
+QList<QSharedPointer<QWAppliance> > QWActuator::find(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
 {
 #ifdef QT_DEBUG
     qDebug() << "Finding";
 #endif
-    QList<QWAppliance> results = *_appliances;
+    QList<QSharedPointer<QWAppliance> > results = *_appliances;
     if(subtypes.length() != 0) {
         for(int i = results.length()-1; i >=0; i--){
             for(int j = 0; j < subtypes.length(); j++){
-                QList<QString>::const_iterator it = qBinaryFind(results[i].subtypes(), subtypes[j]);
-                if(it == results[i].subtypes().constEnd() && subtypes[j] != results[i].name()){
+                QList<QString>::const_iterator it = qBinaryFind(results.at(i)->subtypes(), subtypes[j]);
+                if(it == results.at(i)->subtypes().constEnd() && subtypes[j] != results.at(i)->name()){
                     results.removeAt(i);
                     break;
                 }
@@ -124,7 +124,7 @@ QList<QWAppliance> QWActuator::find(const QStringList &subtypes, const QHash<QSt
     if(attributes.keys().length() != 0) {
         for(int i = results.length()-1; i >= 0; i--){
             for(int j = 0; j < keys.length(); j++){
-                const QVariant r = results[i].attributes().value(keys[j]);
+                const QVariant r = results.at(i)->attributes().value(keys[j]);
                 if(r != attributes.value(keys[j])){
                     results.removeAt(i);
                     break;

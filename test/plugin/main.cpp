@@ -27,17 +27,17 @@ int main(int argc, char *argv[])
         qDebug() << "actuator not found";
         return 1;
     }
-    QWAppliance app;
-    app.setName("prova");
-    app.addSubtype("home");
-    app.addSubtype("example");
-    app.addSubtype("aaa");
-    app.addSubtype("aab");
-    app.addSubtype("zero");
-    app.addSubtype("cracker");
-    app.setAttribute("value", QVariant(0));
-    for(int i = 0; i < app.subtypes().length(); i++){
-        qDebug() << app.subtypes().at(i);
+    QSharedPointer<QWAppliance> app = QSharedPointer<QWAppliance>(new QWAppliance);
+    app->setName("prova");
+    app->addSubtype("home");
+    app->addSubtype("example");
+    app->addSubtype("aaa");
+    app->addSubtype("aab");
+    app->addSubtype("zero");
+    app->addSubtype("cracker");
+    app->setAttribute("value", QVariant(0));
+    for(int i = 0; i < app->subtypes().length(); i++){
+        qDebug() << app->subtypes().at(i);
     }
     actuator->addAppliance(app);
     QStringList sl;
