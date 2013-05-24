@@ -26,8 +26,8 @@
 class QQWAppliance : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QString name READ name)
-    Q_PROPERTY(QStringList subtypes READ subtypes)
+    Q_PROPERTY(QString name READ name NOTIFY nameChanged)
+    Q_PROPERTY(QStringList subtypes READ subtypes NOTIFY subtypesChanged)
     Q_PROPERTY(QQmlListProperty<QWAppProperty> properties READ properties NOTIFY propertiesChanged)
 public:
     explicit QQWAppliance(QObject *parent = 0);
@@ -50,6 +50,8 @@ public:
 
 signals:
     void propertiesChanged();
+    void nameChanged();
+    void subtypesChanged();
 
 private:
     QString _name;

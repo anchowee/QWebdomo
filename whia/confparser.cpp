@@ -113,8 +113,10 @@ QWActuator *Configurator::parseActuator(QXmlStreamReader &xml)
             while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "appliance")){
                 if(xml.name() == "var"){
                     const QString name(xml.attributes().value("name").toString());
-                    //TODO: value type should be different from string
-                    const QVariant value(xml.attributes().value("value").toString());
+                    const QString valueString = xml.attributes().value("value").toString();
+                    bool ok = false;
+                    double valueDouble = valueString.toDouble(&ok);
+                    const QVariant value = ok ? QVariant(valueDouble) : QVariant(valueString);
                     app.setAttribute(name, value);
                 }
 

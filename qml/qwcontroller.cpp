@@ -76,3 +76,11 @@ void QWController::addAppliances(const QList<QQWAppliance *> &appList)
     _appliances.append(appList);
     emit appliancesChanged();
 }
+
+
+void QWController::changeApplianceProperty(const QStringList &apps, const QString &propertyName, const QVariant &newValue)
+{
+    QHash<QString, QVariant> properties;
+    properties.insert(propertyName, newValue);
+    _device->changeAppliancesProperties(apps, properties);
+}
