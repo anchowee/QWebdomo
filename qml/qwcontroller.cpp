@@ -16,6 +16,9 @@
 
 #include "qwcontroller.h"
 #include <QMultiHash>
+#ifdef QT_DEBUG
+#include <QDebug>
+#endif
 
 class QWControllerPrivate {
 public:
@@ -99,6 +102,9 @@ void QWController::changeApplianceProperty(const QStringList &apps, const QStrin
 void QWController::connectedDeviceChanged(const QXmppPresence &presence)
 {
     if(presence.type() == QXmppPresence::Unavailable){
+#ifdef QT_DEBUG
+        qDebug() << presence.from() <<" has disconnected, removing appliances";
+#endif
         d->appliances.remove(presence.from());
     }
     emit appliancesChanged();
