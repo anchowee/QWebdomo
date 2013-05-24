@@ -101,6 +101,9 @@ void QWController::changeApplianceProperty(const QStringList &apps, const QStrin
 
 void QWController::connectedDeviceChanged(const QXmppPresence &presence)
 {
+#ifdef QT_DEBUG
+    qDebug() << "presence message arrived";
+#endif
     if(presence.type() == QXmppPresence::Unavailable){
 #ifdef QT_DEBUG
         qDebug() << presence.from() <<" has disconnected, removing appliances";
