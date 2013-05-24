@@ -15,72 +15,92 @@
  */
 
 #include "qwcontroller.h"
+#include <QMultiHash>
 
-QWController::QWController(QObject *parent) : QObject(parent)
+class QWControllerPrivate {
+public:
+    QWControllerPrivate() : configuration(0), device(0) {}
+
+    QWCommanderDevice *device;
+    QQWDeviceConfiguration *configuration;
+    QMultiHash<QString, QQWAppliance*> appliances;
+};
+
+QWController::QWController(QObject *parent) : QObject(parent), d(new QWControllerPrivate)
 {
 }
 
 QWController::~QWController()
 {
-    if(_configuration) delete _configuration;
+    delete d;
 }
 
 
 QQWDeviceConfiguration *QWController::configuration() const
 {
-    if(configuration()) return _configuration;
-    return 0;
+    return d->configuration;
 }
 
 void QWController::setConfiguration(QQWDeviceConfiguration *conf)
 {
-    _configuration = conf;
-    _device = new QWCommanderDevice(_configuration->getConfiguration(), this);
+    d->configuration = conf;
+    d->device = new QWCommanderDevice(d->configuration->getConfiguration(), this);
 
-    connect(_device, SIGNAL(updateAppliances(QList<QQWAppliance*>)),
-            this, SLOT(updateAppliances(QList<QQWAppliance*>)));
+    connect(d->device, SIGNAL(updateAppliances(QString, QList<QQWAppliance*>)),
+            this, SLOT(updateAppliances(QString, QList<QQWAppliance*>)));
 
-    connect(_device, SIGNAL(setAppliances(QList<QQWAppliance*>)),
-            this, SLOT(addAppliances(QList<QQWAppliance*>)));
+    connect(d->device, SIGNAL(setAppliances(QString, QList<QQWAppliance*>)),
+            this, SLOT(updateAppliances(QString,QList<QQWAppliance*>)));
 
-    connect(_device, SIGNAL(connected()), this, SIGNAL(connected()));
+    connect(d->device, SIGNAL(connected()), this, SIGNAL(connected()));
+
+    connect(d->device, SIGNAL(presenceReceived(QXmppPresence)),
+            this, SLOT(connectedDeviceChanged(QXmppPresence)));
 
     emit configurationChanged();
 }
 
-
 QQmlListProperty<QQWAppliance> QWController::appliances()
 {
-    return QQmlListProperty<QQWAppliance>(this, _appliances);
+    QList<QQWAppliance*> apps = d->appliances.values();
+    return QQmlListProperty<QQWAppliance>(this, apps);
 }
 
 
-void QWController::updateAppliances(const QList<QQWAppliance *> &appList)
+void QWController::updateAppliances(const QString &deviceJid, const QList<QQWAppliance *> &appList)
 {
-    QList<QQWAppliance *>::iterator internalIt;
     QList<QQWAppliance *>::const_iterator updatesIt;
-    for(internalIt = _appliances.begin(); internalIt != _appliances.end(); ++internalIt){
-        QQWAppliance *app = *internalIt;
-        for(updatesIt = appList.constBegin(); updatesIt != appList.constEnd(); ++updatesIt){
-            const QQWAppliance *changedApp = *updatesIt;
-            if(*app == *changedApp){
-                app->updateProperties(changedApp->propertiesList());
+    QHash<QString, QQWAppliance*>::iterator i = d->appliances.find(deviceJid);
+    if(i == d->appliances.end()){
+        for(updatesIt = appList.constBegin(); updatesIt != appList.constEnd(); updatesIt++){
+            d->appliances.insert(deviceJid, *updatesIt);
+        }
+    } else {
+        while(i != d->appliances.end()){
+            for(updatesIt = appList.constBegin(); updatesIt != appList.constEnd(); updatesIt++){
+                const QQWAppliance *newApp = *updatesIt;
+                if(*newApp == *(i.value())){
+                    i.value()->updateProperties(newApp->propertiesList());
+                }
             }
+            i++;
         }
     }
     emit appliancesChanged();
 }
 
-void QWController::addAppliances(const QList<QQWAppliance *> &appList)
-{
-    _appliances.append(appList);
-    emit appliancesChanged();
-}
-
-
 void QWController::changeApplianceProperty(const QStringList &apps, const QString &propertyName, const QVariant &newValue)
 {
     QHash<QString, QVariant> properties;
     properties.insert(propertyName, newValue);
-    _device->changeAppliancesProperties(apps, properties);
+    d->device->changeAppliancesProperties(apps, properties);
 }
+
+void QWController::connectedDeviceChanged(const QXmppPresence &presence)
+{
+    if(presence.type() == QXmppPresence::Unavailable){
+        d->appliances.remove(presence.from());
+    }
+    emit appliancesChanged();
+}
+

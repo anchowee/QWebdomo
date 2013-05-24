@@ -17,8 +17,8 @@ public slots:
     void changeAppliancesProperties(const QStringList &subtypes, const QHash<QString, QVariant> &values);
 
 signals:
-    void updateAppliances(const QList<QQWAppliance *> &appList);
-    void setAppliances(const QList<QQWAppliance *> &appList);
+    void updateAppliances(const QString &senderJid, const QList<QQWAppliance *> &appList);
+    void setAppliances(const QString &senderJid, const QList<QQWAppliance *> &appList);
     
 protected:
     void composeAndSendRequest(const QString &type, const QStringList &subtypes, const QHash<QString, QVariant> &properties);

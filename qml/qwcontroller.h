@@ -24,7 +24,8 @@
 #include <QObject>
 #include <QQmlListProperty>
 
-//TODO: write a function to make a get request and a put one
+class QWControllerPrivate;
+
 class QWController : public QObject
 {
     Q_OBJECT
@@ -42,6 +43,10 @@ public:
     QQWDeviceConfiguration *configuration() const;
     void setConfiguration(QQWDeviceConfiguration *conf);
 
+    //List
+    int countAppliances(QQmlListProperty<QQWAppliance> *l);
+    QQWAppliance *getApplianceAt(QQmlListProperty<QQWAppliance> *l, int idx);
+
 signals:
     void appliancesChanged();
     void configurationChanged();
@@ -51,13 +56,11 @@ public slots:
     void changeApplianceProperty(const QStringList &apps, const QString &propertyName, const QVariant &newValue);
 
 private slots:
-    void updateAppliances(const QList<QQWAppliance *> &appList);
-    void addAppliances(const QList<QQWAppliance *> &appList);
+    void connectedDeviceChanged(const QXmppPresence &presence);
+    void updateAppliances(const QString &deviceJid, const QList<QQWAppliance *> &appList);
 
 private:
-    QWCommanderDevice *_device;
-    QQWDeviceConfiguration *_configuration;
-    QList<QQWAppliance*> _appliances;
+    QWControllerPrivate *d;
 };
 
 #endif // QWCONTROLLER_H

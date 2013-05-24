@@ -40,6 +40,7 @@ public:
 
 signals:
     void sendRoomMessage(const QString &message);
+    void connectedDeviceChanged(const QString &jid);
 
 protected:
     virtual void parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content) = 0;

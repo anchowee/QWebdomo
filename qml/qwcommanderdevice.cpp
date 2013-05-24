@@ -55,10 +55,10 @@ void QWCommanderDevice::parseMessage(const QString &senderJid, const QString &ty
     }
 
     if(type == "NOTIFY_PUT"){
-        emit updateAppliances(applianceList);
+        emit updateAppliances(senderJid, applianceList);
         return;
     }
-    emit setAppliances(applianceList);
+    emit setAppliances(senderJid, applianceList);
 }
 
 
