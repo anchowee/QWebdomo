@@ -10,12 +10,12 @@ QWFakeActuator::QWFakeActuator(QObject *parent) :
 
 void QWFakeActuator::changeState(QList<QWAppliance> *selectedAppliances, const QHash<QString, QVariant> &newStates)
 {
-#ifdef QT_DEBUG
-    qDebug() << "Fake acuator in action";
-#endif
     const QStringList keys = newStates.keys();
     QStringList::const_iterator ki;
     QList<QWAppliance>::iterator li;
+#ifdef QT_DEBUG
+    qDebug() << "Fake acuator in action on " << keys;
+#endif
     for(li = selectedAppliances->begin(); li != selectedAppliances->end(); li++){
         for(ki = keys.constBegin(); ki != keys.constEnd(); ki++){
 #ifdef QT_DEBUG
