@@ -60,6 +60,8 @@ void QWController::setConfiguration(QQWDeviceConfiguration *conf)
     connect(d->device, SIGNAL(presenceReceived(QXmppPresence)),
             this, SLOT(connectedDeviceChanged(QXmppPresence)));
 
+    connect(d->device, SIGNAL(connectedDeviceChanged(QString)), this, SLOT());
+
     emit configurationChanged();
 }
 
@@ -99,8 +101,16 @@ void QWController::changeApplianceProperty(const QStringList &apps, const QStrin
     d->device->changeAppliancesProperties(apps, properties);
 }
 
+void QWController::_connectedDeviceChanged(const QString &deviceJid)
+{
+#ifdef QT_DEBUG
+    qDebug() << "Connected device changed new method";
+#endif
+}
+
 void QWController::connectedDeviceChanged(const QXmppPresence &presence)
 {
+    //TODO: this method gets never called
 #ifdef QT_DEBUG
     qDebug() << "presence message arrived";
 #endif

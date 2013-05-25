@@ -67,6 +67,7 @@ void QWDevice::startChat()
 
     connect(this, SIGNAL(sendRoomMessage(QString)), room, SLOT(sendMessage(QString)));
     connect(room, SIGNAL(participantAdded(QString)), this, SLOT(addDevice(QString)));
+    connect(room, SIGNAL(participantChanged(QString)), this, SIGNAL(connectedDeviceChanged(QString)));
 }
 
 void QWDevice::addDevice(const QString &jid)

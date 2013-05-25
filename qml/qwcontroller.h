@@ -56,6 +56,7 @@ public slots:
     void changeApplianceProperty(const QStringList &apps, const QString &propertyName, const QVariant &newValue);
 
 private slots:
+    void _connectedDeviceChanged(const QString &deviceJid);
     void connectedDeviceChanged(const QXmppPresence &presence);
     void updateAppliances(const QString &deviceJid, const QList<QQWAppliance *> &appList);
 
