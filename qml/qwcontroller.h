@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include <QQmlListProperty>
+#include <qxmpp/QXmppPresence.h>
 
 class QWControllerPrivate;
 
@@ -38,14 +39,12 @@ public:
 
     //appliances
     QQmlListProperty<QQWAppliance> appliances();
+    static int countAppliances(QQmlListProperty<QQWAppliance> *list);
+    static QQWAppliance *getApplainceAt(QQmlListProperty<QQWAppliance> *list, int index);
 
     //Configuration
     QQWDeviceConfiguration *configuration() const;
     void setConfiguration(QQWDeviceConfiguration *conf);
-
-    //List
-    int countAppliances(QQmlListProperty<QQWAppliance> *l);
-    QQWAppliance *getApplianceAt(QQmlListProperty<QQWAppliance> *l, int idx);
 
 signals:
     void appliancesChanged();
@@ -56,7 +55,7 @@ public slots:
     void changeApplianceProperty(const QStringList &apps, const QString &propertyName, const QVariant &newValue);
 
 private slots:
-    void _connectedDeviceChanged(const QString &deviceJid);
+    //void connectedDeviceChanged2(const QString &deviceJid);
     void connectedDeviceChanged(const QXmppPresence &presence);
     void updateAppliances(const QString &deviceJid, const QList<QQWAppliance *> &appList);
 

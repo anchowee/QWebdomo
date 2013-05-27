@@ -22,7 +22,7 @@
 
 class QWControllerPrivate {
 public:
-    QWControllerPrivate() : configuration(0), device(0) {}
+    QWControllerPrivate() : device(0), configuration(0) {}
 
     QWCommanderDevice *device;
     QQWDeviceConfiguration *configuration;
@@ -57,18 +57,32 @@ void QWController::setConfiguration(QQWDeviceConfiguration *conf)
 
     connect(d->device, SIGNAL(connected()), this, SIGNAL(connected()));
 
-    connect(d->device, SIGNAL(presenceReceived(QXmppPresence)),
-            this, SLOT(connectedDeviceChanged(QXmppPresence)));
-
-    connect(d->device, SIGNAL(connectedDeviceChanged(QString)), this, SLOT());
+    //connect(d->device, SIGNAL(connectedDeviceChanged(QString)), this, SLOT(connectedDeviceChanged2(QString)));
 
     emit configurationChanged();
 }
 
 QQmlListProperty<QQWAppliance> QWController::appliances()
 {
-    QList<QQWAppliance*> apps = d->appliances.values();
-    return QQmlListProperty<QQWAppliance>(this, apps);
+    return QQmlListProperty<QQWAppliance>(this, 0, &QWController::countAppliances, &QWController::getApplainceAt);
+}
+
+int QWController::countAppliances(QQmlListProperty<QQWAppliance> *list)
+{
+    QWController *c = qobject_cast<QWController *>(list->object);
+    if(c){
+        const QList<QQWAppliance*> l = c->d->appliances.values();
+        return l.length();
+    }
+}
+
+QQWAppliance *QWController::getApplainceAt(QQmlListProperty<QQWAppliance> *list, int index)
+{
+    QWController *c = qobject_cast<QWController *>(list->object);
+    if(c){
+        const QList<QQWAppliance*> l = c->d->appliances.values();
+        return l.at(index);
+    }
 }
 
 
@@ -99,13 +113,6 @@ void QWController::changeApplianceProperty(const QStringList &apps, const QStrin
     QHash<QString, QVariant> properties;
     properties.insert(propertyName, newValue);
     d->device->changeAppliancesProperties(apps, properties);
-}
-
-void QWController::_connectedDeviceChanged(const QString &deviceJid)
-{
-#ifdef QT_DEBUG
-    qDebug() << "Connected device changed new method";
-#endif
 }
 
 void QWController::connectedDeviceChanged(const QXmppPresence &presence)
