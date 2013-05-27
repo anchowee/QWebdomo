@@ -57,8 +57,6 @@ void QWController::setConfiguration(QQWDeviceConfiguration *conf)
 
     connect(d->device, SIGNAL(connected()), this, SIGNAL(connected()));
 
-    //connect(d->device, SIGNAL(connectedDeviceChanged(QString)), this, SLOT(connectedDeviceChanged2(QString)));
-
     emit configurationChanged();
 }
 
