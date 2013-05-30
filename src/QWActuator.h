@@ -23,6 +23,8 @@
 #include <QStringList>
 #include <QSharedPointer>
 
+class QWActuatorPrivate;
+
 class QWActuator : public QObject
 {
     Q_OBJECT
@@ -32,26 +34,32 @@ public:
 
     QStringList getSubtypes() const; //TODO: maybe this can be deleted
 
+    void setVars(const QHash<QString, QVariant> &vars);
+    QVariant var(const QString &name);
+
+    virtual void initialize();
+    void start();
+    bool isStarted();
+
     virtual void changeState(QList<QSharedPointer<QWAppliance> > *selectedAppliances, const QHash<QString, QVariant> &newStates) = 0;
 
-    virtual QString put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes);
-    virtual QString get(const QStringList &subtypes, const QHash<QString, QVariant> &attributes);
+    virtual void put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes);
+    virtual void get(const QString &senderJid, const QStringList &subtypes, const QHash<QString, QVariant> &attributes);
 
 signals:
     void appliancesChanged();
+    void notifyGet(const QString &senderJid, const QString &result);
+    void notifyPut(const QString &result);
 
 public slots:
     void addAppliance(const QSharedPointer<QWAppliance> app);
 
 protected:
     QList<QSharedPointer<QWAppliance> > find(const QStringList &subtypes, const QHash<QString, QVariant> &attributes = QHash<QString, QVariant>());
-    
-private:
     QString formatResponse(const QString &respType, const QList<QSharedPointer<QWAppliance> > &appliances) const;
 
 private:
-    QList<QSharedPointer<QWAppliance> > *_appliances;
-
+    QWActuatorPrivate *d;
 };
 
 Q_DECLARE_INTERFACE(QWActuator, "Webdomo.Plugin.QWActuator/1.0")

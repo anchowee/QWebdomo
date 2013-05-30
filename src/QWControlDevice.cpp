@@ -27,6 +27,8 @@ QWControlDevice::~QWControlDevice()
 void QWControlDevice::addActuator(QWActuator *actuator)
 {
     if(!d->actuators.contains(actuator)){
+        connect(actuator, SIGNAL(notifyGet(QString,QString)), this, SLOT(sendMessage(QString,QString)));
+        connect(actuator, SIGNAL(notifyPut(QString)), this, SLOT(sendRoomMessage(QString)));
         d->actuators.append(actuator);
     }
 }
@@ -65,17 +67,11 @@ void QWControlDevice::parseMessage(const QString &senderJid, const QString &type
     QList<QWActuator *>::iterator i;
     if(type == "GET"){ //the response will be sent only to the caller
         for(i = d->actuators.begin(); i != d->actuators.end(); i++){
-            const QString resp = (*i)->get(st, atts);
-            if(!resp.isEmpty()){
-                sendMessage(senderJid, resp);
-            }
+            (*i)->get(senderJid, st, atts);
         }
     } else { // type == PUT => the response is sent on the group chat
         for(i = d->actuators.begin(); i != d->actuators.end(); i++){
-            const QString resp = (*i)->put(st, atts);
-            if(!resp.isEmpty()){
-                emit sendRoomMessage(resp);
-            }
+            (*i)->put(st, atts);
         }
     }
 

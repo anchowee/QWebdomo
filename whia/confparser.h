@@ -31,6 +31,7 @@ public:
     static QList<QWActuator *> getActuators();
 
 private:
+    static QPair<QString, QVariant> getVariable(QXmlStreamReader &xml);
     static QWActuator *parseActuator(QXmlStreamReader &xml);
 };
 

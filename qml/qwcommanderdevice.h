@@ -13,7 +13,7 @@ public:
     explicit QWCommanderDevice(const QWDeviceConfiguration &configuration, QObject *parent = 0);
 
 public slots:
-    void getAll();
+    void getAll(const QString &deviceJid = QString());
     void changeAppliancesProperties(const QStringList &subtypes, const QHash<QString, QVariant> &values);
 
 signals:

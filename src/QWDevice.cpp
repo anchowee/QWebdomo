@@ -65,7 +65,6 @@ void QWDevice::startChat()
     room->setNickName(configuration().jid());
     room->join();
 
-    connect(this, SIGNAL(sendRoomMessage(QString)), room, SLOT(sendMessage(QString)));
     connect(room, SIGNAL(participantAdded(QString)), this, SLOT(addDevice(QString)));
 }
 
@@ -86,4 +85,14 @@ void QWDevice::_parseMessage(const QXmppMessage &message)
     QJsonValue action = obj.value("action");
     QString type = action.toString();
     parseMessage(message.from(), type, obj.value("content"));
+}
+
+
+void QWDevice::sendRoomMessage(const QString &message)
+{
+    const QList<QXmppMucRoom *> l = d->mucManager.rooms();
+    QList<QXmppMucRoom *>::const_iterator i;
+    for(i = l.constBegin(); i != l.constEnd(); i++){
+        (*i)->sendMessage(message);
+    }
 }

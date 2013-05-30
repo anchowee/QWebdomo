@@ -57,6 +57,9 @@ void QWController::setConfiguration(QQWDeviceConfiguration *conf)
 
     connect(d->device, SIGNAL(connected()), this, SIGNAL(connected()));
 
+    connect(d->device, SIGNAL(presenceReceived(QXmppPresence)),
+            this, SLOT(connectedDeviceChanged(QXmppPresence)));
+
     emit configurationChanged();
 }
 
@@ -115,7 +118,6 @@ void QWController::changeApplianceProperty(const QStringList &apps, const QStrin
 
 void QWController::connectedDeviceChanged(const QXmppPresence &presence)
 {
-    //TODO: this method gets never called
 #ifdef QT_DEBUG
     qDebug() << "presence message arrived";
 #endif
@@ -124,6 +126,8 @@ void QWController::connectedDeviceChanged(const QXmppPresence &presence)
         qDebug() << presence.from() <<" has disconnected, removing appliances";
 #endif
         d->appliances.remove(presence.from());
+    } else if(presence.type() == QXmppPresence::Available){
+        d->device->getAll(presence.from());
     }
     emit appliancesChanged();
 }

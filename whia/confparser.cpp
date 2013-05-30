@@ -83,10 +83,21 @@ QList<QWActuator*> Configurator::getActuators()
     return result;
 }
 
+QPair<QString, QVariant> Configurator::getVariable(QXmlStreamReader &xml)
+{
+    const QString name(xml.attributes().value("name").toString());
+    const QString valueString = xml.attributes().value("value").toString();
+    bool ok = false;
+    double valueDouble = valueString.toDouble(&ok);
+    const QVariant value = ok ? QVariant(valueDouble) : QVariant(valueString);
+    return QPair<QString, QVariant>(name, value);
+}
+
 QWActuator *Configurator::parseActuator(QXmlStreamReader &xml)
 {
     QWActuator *actuator = 0;
     QStringList subtypes;
+    QHash<QString, QVariant> globalVars;
 
     if(xml.tokenType() != QXmlStreamReader::StartElement && xml.name() == "actuator") {
         return actuator;
@@ -101,6 +112,13 @@ QWActuator *Configurator::parseActuator(QXmlStreamReader &xml)
 
     while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "actuator")){
 
+        //Get global variables
+        if(xml.name() == "var" && xml.tokenType() == QXmlStreamReader::StartElement){
+            const QPair<QString, QVariant> var = getVariable(xml);
+            globalVars.insert(var.first, var.second);
+        }
+
+        //Get <subtype> element
         if(xml.name() == "subtype" && xml.tokenType() == QXmlStreamReader::StartElement){
             subtypes.append(xml.attributes().value("name").toString());
         }
@@ -112,13 +130,9 @@ QWActuator *Configurator::parseActuator(QXmlStreamReader &xml)
 
             xml.readNext();
             while(!(xml.tokenType() == QXmlStreamReader::EndElement && xml.name() == "appliance")){
-                if(xml.name() == "var"){
-                    const QString name(xml.attributes().value("name").toString());
-                    const QString valueString = xml.attributes().value("value").toString();
-                    bool ok = false;
-                    double valueDouble = valueString.toDouble(&ok);
-                    const QVariant value = ok ? QVariant(valueDouble) : QVariant(valueString);
-                    app->setAttribute(name, value);
+                if(xml.name() == "var" && xml.tokenType() == QXmlStreamReader::StartElement){
+                    const QPair<QString, QVariant> var = getVariable(xml);
+                    app->setAttribute(var.first, var.second);
                 }
 
                 xml.readNext();
@@ -129,5 +143,7 @@ QWActuator *Configurator::parseActuator(QXmlStreamReader &xml)
         xml.readNext();
     }
 
+    actuator->setVars(globalVars);
+    actuator->start();
     return actuator;
 }

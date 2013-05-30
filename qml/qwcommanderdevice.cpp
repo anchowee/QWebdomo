@@ -10,7 +10,7 @@ QWCommanderDevice::QWCommanderDevice(const QWDeviceConfiguration &configuration,
     connect(this, SIGNAL(connected()), this, SLOT(getAll()));
 }
 
-void QWCommanderDevice::getAll()
+void QWCommanderDevice::getAll(const QString &deviceJid)
 {
     QJsonObject content;
     content.insert("subtypes", QJsonArray());
@@ -18,7 +18,11 @@ void QWCommanderDevice::getAll()
     messageContent.insert("action", QJsonValue(QString("GET")));
     messageContent.insert("content", content);
     QJsonDocument doc(messageContent);
-    emit sendRoomMessage(QString(doc.toJson()));
+    if(deviceJid.isEmpty()){
+        sendRoomMessage(QString(doc.toJson()));
+    } else {
+        sendMessage(deviceJid, QString(doc.toJson()));
+    }
 }
 
 void QWCommanderDevice::changeAppliancesProperties(const QStringList &subtypes, const QHash<QString, QVariant> &values)
@@ -80,5 +84,5 @@ void QWCommanderDevice::composeAndSendRequest(const QString &type, const QString
     messageContent.insert("action", QJsonValue(type));
     messageContent.insert("content", content);
     const QJsonDocument doc(messageContent);
-    emit sendRoomMessage(QString(doc.toJson()));
+    sendRoomMessage(QString(doc.toJson()));
 }

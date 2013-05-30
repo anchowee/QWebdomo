@@ -40,13 +40,4 @@ int main(int argc, char *argv[])
         qDebug() << app->subtypes().at(i);
     }
     actuator->addAppliance(app);
-    QStringList sl;
-    QHash<QString, QVariant> qh;
-    qDebug() << "-- doGet empty test";
-    qDebug() << actuator->get(sl,qh);
-    sl.append("home");
-    sl.append("aab");
-    qDebug() << "-- doGet with home subtype";
-    qDebug() << actuator->get(sl, qh);
-    qDebug() << "done";
 }

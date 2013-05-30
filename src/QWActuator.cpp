@@ -25,43 +25,65 @@
 #include <QDebug>
 #endif
 
+class QWActuatorPrivate {
+public:
+    explicit QWActuatorPrivate() {}
+
+    QList<QSharedPointer<QWAppliance> > appliances;
+    QHash<QString, QVariant> globalVars;
+    bool started = false;
+};
+
 QWActuator::QWActuator(QObject *parent) :
-    QObject(parent)
-{
-#ifdef QT_DEBUG
-    qDebug() << "Creating new actuator";
-#endif
-    _appliances = new QList<QSharedPointer<QWAppliance> >();
-}
+    QObject(parent), d(new QWActuatorPrivate)
+{}
+
+
 
 QWActuator::~QWActuator()
 {
-    delete _appliances;
+    delete d;
 }
 
 QStringList QWActuator::getSubtypes() const
 {
     QStringList subtypes;
-    for(int i = 0; i < _appliances->length(); i++){
-        subtypes.append(_appliances->at(i)->subtypes());
-        subtypes.append(_appliances->at(i)->name());
+    for(int i = 0; i < d->appliances.length(); i++){
+        subtypes.append(d->appliances.at(i)->subtypes());
+        subtypes.append(d->appliances.at(i)->name());
     }
     return subtypes;
 }
 
-QString QWActuator::put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
+void QWActuator::setVars(const QHash<QString, QVariant> &vars)
 {
-    QList<QSharedPointer<QWAppliance> > appsToChange = find(subtypes);
-    if(appsToChange.length() == 0) return QString();
-    changeState(&appsToChange, attributes);
-    return formatResponse("PUT", appsToChange);
+    if(d->started) return;
+    d->globalVars = vars;
 }
 
-QString QWActuator::get(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
+QVariant QWActuator::var(const QString &name){
+    return d->globalVars.value(name);
+}
+
+void QWActuator::put(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
+{
+    QList<QSharedPointer<QWAppliance> > appsToChange = find(subtypes);
+    if(appsToChange.length() == 0) return;
+    changeState(&appsToChange, attributes);
+    const QString response = formatResponse("PUT", appsToChange);
+    if(response != ""){
+        emit notifyPut(response);
+    }
+}
+
+void QWActuator::get(const QString &senderJid, const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
 {
     const QList<QSharedPointer<QWAppliance> > apps = find(subtypes, attributes);
-    if(apps.length() == 0) return QString();
-    return formatResponse("GET", apps);
+    if(apps.length() == 0) return;
+    const QString response = formatResponse("GET", apps);
+    if(response != ""){
+        emit notifyGet(senderJid, response);
+    }
 }
 
 QString QWActuator::formatResponse(const QString &respType, const QList<QSharedPointer<QWAppliance> > &appliances) const
@@ -98,8 +120,27 @@ QString QWActuator::formatResponse(const QString &respType, const QList<QSharedP
 
 void QWActuator::addAppliance(const QSharedPointer<QWAppliance> app)
 {
-    if(!_appliances->contains(app))
-        _appliances->append(app);
+    if(!d->appliances.contains(app))
+        d->appliances.append(app);
+}
+
+void QWActuator::initialize()
+{
+    ///By default it does nothing
+}
+
+
+void QWActuator::start()
+{
+    if(d->started) return;
+
+    initialize();
+    d->started = true;
+}
+
+bool QWActuator::isStarted()
+{
+    return d->started;
 }
 
 QList<QSharedPointer<QWAppliance> > QWActuator::find(const QStringList &subtypes, const QHash<QString, QVariant> &attributes)
@@ -107,7 +148,7 @@ QList<QSharedPointer<QWAppliance> > QWActuator::find(const QStringList &subtypes
 #ifdef QT_DEBUG
     qDebug() << "Finding";
 #endif
-    QList<QSharedPointer<QWAppliance> > results = *_appliances;
+    QList<QSharedPointer<QWAppliance> > results = d->appliances;
     if(subtypes.length() != 0) {
         for(int i = results.length()-1; i >=0; i--){
             for(int j = 0; j < subtypes.length(); j++){

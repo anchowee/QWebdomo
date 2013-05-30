@@ -1,3 +1,4 @@
 TEMPLATE = subdirs
 
-SUBDIRS += fake
+SUBDIRS += fake \
+    GME-thermostat

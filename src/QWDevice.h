@@ -39,8 +39,10 @@ public:
     QString roomJid() const;
 
 signals:
-    void sendRoomMessage(const QString &message);
     void connectedDeviceChanged(const QString &jid);
+
+public slots:
+    void sendRoomMessage(const QString &message);
 
 protected:
     virtual void parseMessage(const QString &senderJid, const QString &type, const QJsonValue &content) = 0;
