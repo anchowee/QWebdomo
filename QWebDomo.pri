@@ -1,4 +1,5 @@
 QT       -= gui
+INCLUDEPATH += $$PWD/core $$PWD/core/device $$PWD/core/server
 
 isEmpty(PREFIX) {
     unix {
@@ -21,6 +22,15 @@ isEmpty(BINDIR) {
 #Configurations directory
 isEmpty(CONF_PATH) {
     CONF_PATH = /etc/whia
+}
+
+#Type of library (static, shared)
+isEmpty(QW_LIBRARY_TYPE){
+    android{
+        QW_LIBRARY_TYPE=staticlib
+    } else {
+        QW_LIBRARY_TYPE=shared
+    }
 }
 
 #Version numbers

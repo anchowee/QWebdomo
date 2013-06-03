@@ -7,8 +7,7 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
-QMAKE_LIBDIR += ../src
-INCLUDEPATH += ../src
+QMAKE_LIBDIR += ../core
 LIBS += -lqwebdomo -lqxmpp
 
 TARGET = whia

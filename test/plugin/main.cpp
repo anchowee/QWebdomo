@@ -15,7 +15,7 @@
  */
 
 #include "QWActuator.h"
-#include "utils/QWPluginsManager.h"
+#include "QWPluginsManager.h"
 
 #include <QCoreApplication>
 #include <QDebug>

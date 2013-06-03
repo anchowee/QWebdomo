@@ -8,5 +8,4 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 LIBS += -lqwebdomo -lqxmpp
 
-QMAKE_LIBDIR += ../../src
-INCLUDEPATH += ../../src
+QMAKE_LIBDIR += ../../core

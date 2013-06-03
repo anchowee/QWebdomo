@@ -16,7 +16,7 @@
 
 #include "confparser.h"
 
-#include "utils/QWPluginsManager.h"
+#include "QWPluginsManager.h"
 
 #include <QDir>
 #include <QFile>
