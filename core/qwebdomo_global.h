@@ -19,10 +19,14 @@
 
 #include <QtCore/qglobal.h>
 
-#if defined(QWEBDOMO_LIBRARY)
-#  define QWEBDOMOSHARED_EXPORT Q_DECL_EXPORT
+#if defined(QW_STATIC)
+    #define QWEBDOMOSHARED_EXPORT
 #else
-#  define QWEBDOMOSHARED_EXPORT Q_DECL_IMPORT
+    #if defined(QW_LIBRARY)
+        #  define QWEBDOMOSHARED_EXPORT Q_DECL_EXPORT
+    #else
+        #  define QWEBDOMOSHARED_EXPORT Q_DECL_IMPORT
+    #endif
 #endif
 
 #endif // QWEBDOMO_GLOBAL_H

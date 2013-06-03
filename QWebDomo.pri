@@ -1,5 +1,6 @@
 QT       -= gui
 INCLUDEPATH += $$PWD/core $$PWD/core/device $$PWD/core/server
+DEFINES += QW_LIBRARY
 
 isEmpty(PREFIX) {
     unix {
@@ -28,6 +29,7 @@ isEmpty(CONF_PATH) {
 isEmpty(QW_LIBRARY_TYPE){
     android{
         QW_LIBRARY_TYPE=staticlib
+        DEFINES += QW_STATIC
     } else {
         QW_LIBRARY_TYPE=shared
     }
@@ -36,7 +38,7 @@ isEmpty(QW_LIBRARY_TYPE){
 #Version numbers
 QW_VERSION_MAJOR=0
 DEFINES += "QW_VERSION_MAJOR=$${QW_VERSION_MAJOR}"
-QW_VERSION_MINOR=1
+QW_VERSION_MINOR=5
 DEFINES += "QW_VERSION_MINOR=$${QW_VERSION_MINOR}"
 QW_VERSION = $${QW_VERSION_MAJOR}.$${QW_VERSION_MINOR}
 DEFINES += "QW_VERSION=\\\"$${QW_VERSION}\\\""
