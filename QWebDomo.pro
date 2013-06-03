@@ -8,7 +8,7 @@ SUBDIRS += core test
 }
 
 !isEmpty(QW_QML){
-    DEFINES += QWD_QML
+    DEFINES += QW_QML
     SUBDIRS += qml
 }
 

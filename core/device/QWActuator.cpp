@@ -27,11 +27,12 @@
 
 class QWActuatorPrivate {
 public:
-    explicit QWActuatorPrivate() {}
+    explicit QWActuatorPrivate() :
+        started(false) {}
 
     QList<QSharedPointer<QWAppliance> > appliances;
     QHash<QString, QVariant> globalVars;
-    bool started = false;
+    bool started;
 };
 
 QWActuator::QWActuator(QObject *parent) :
