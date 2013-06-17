@@ -16,8 +16,10 @@
 
 [General]
 TLS=false
-domain=picci
-password=123
-roomName=local_appliances
-serviceName=appset
+domain=local
+host=picci
 user=appliance
+password=123
+roomName=appliances
+serviceName=appset
+
