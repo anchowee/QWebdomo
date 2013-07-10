@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS += core test
+SUBDIRS += core
 
 !isEmpty(QW_DEVICE){
     DEFINES += QW_DEVICE
@@ -12,6 +12,6 @@ SUBDIRS += core test
     SUBDIRS += qml
 }
 
-!isEmpty(QW_DEVICE){
-    SUBDIRS += whia plugins
+!isEmpty(QW_TEST){
+    SUBDIRS += test
 }

@@ -18,7 +18,6 @@
 #define QWSERVER_H
 
 #include "qwebdomo_global.h"
-#include "bonjourserviceregister.h"
 
 #include <qxmpp/QXmppServer.h>
 #include <qxmpp/QXmppPasswordChecker.h>
@@ -32,7 +31,6 @@ public:
     
 private:
     QString _name;
-    BonjourServiceRegister *_avahiPublisher;
 };
 
 class PasswordChecker : public QXmppPasswordChecker

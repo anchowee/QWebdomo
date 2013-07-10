@@ -7,6 +7,8 @@
 class ThermostatActuator : public QWActuator
 {
     Q_OBJECT
+    Q_PLUGIN_METADATA(IID "Webdomo.Plugin.QWActuator/1.0" FILE "GME-thermostatActuator.json")
+    Q_INTERFACES(QWActuator)
 public:
     explicit ThermostatActuator(QObject *parent = 0);
     ~ThermostatActuator();

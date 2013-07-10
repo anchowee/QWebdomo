@@ -17,13 +17,13 @@
 #include <QCoreApplication>
 
 #include <qxmpp/QXmppLogger.h>
-#include "../../src/server/qwserver.h>
+#include "qwserver.h"
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QWServer server("127.0.0.1");
+    QWServer server("local");
     Q_UNUSED(server);
 
     return a.exec();

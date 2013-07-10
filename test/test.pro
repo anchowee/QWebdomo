@@ -4,6 +4,6 @@ SUBDIRS += \
     client \
     plugin
 
-!isEmpty(QWD_USE_SERVER){
+!isEmpty(QW_SERVER){
     SUBDIRS += server_example
 }
